@@ -10,9 +10,9 @@ class EventList extends Component {
     }
 
     this.state = {
-      today: new Date(),
-      tomorrow: new Date().addDays(1),
-      upcoming: new Date().addDays(2),
+      today: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+      tomorrow: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(1),
+      upcoming: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(2),
       data: [
         {
           name: 'TEST',
@@ -138,7 +138,7 @@ class EventList extends Component {
     let fullData = [ ...this.props.data, ...this.state.data ]
 
     let todayList = fullData.map((el, index) => {
-      if (el.eventDate.toLocaleDateString() === today.toLocaleDateString()) {
+      if (el.eventDate >= today && el.eventDate <= tomorrow) {
         return (
           <li key={index}>
             {el.name}
@@ -149,7 +149,7 @@ class EventList extends Component {
     });
 
     let tomorrowList = fullData.map((el, index) => {
-      if (el.eventDate.toLocaleDateString() === tomorrow.toLocaleDateString()) {
+      if (el.eventDate >= tomorrow && el.eventDate <= upcoming) {
         return (
           <li key={index}>
             {el.name}
@@ -160,7 +160,7 @@ class EventList extends Component {
     });
 
     let upcomingList = fullData.map((el, index) => {
-      if (el.eventDate.toLocaleDateString() >= upcoming.toLocaleDateString()) {
+      if (el.eventDate >= upcoming) {
         return (
           <li key={index}>
             {el.name}
