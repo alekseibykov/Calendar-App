@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     this.state = {
       startDate: new Date(),
-      name: 'yyyy',
+      name: 'Add task here',
       data: [],
     };
   }
