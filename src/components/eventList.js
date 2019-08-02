@@ -56,9 +56,7 @@ class EventList extends Component {
         newData.push(el);
       }
     })
-    this.setState({
-      data: newData,
-    });
+    this.setState({data: newData}, this.props.removeTask(eventDate));
   }
 
   render() {

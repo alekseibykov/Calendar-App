@@ -43,11 +43,23 @@ class App extends Component {
     });
   }
 
+  handleClick_2(eventDate) {
+    let newData = [];
+    this.state.data.forEach((el) => {
+      if (el.eventDate !== eventDate) {
+        newData.push(el);
+      }
+    })
+    this.setState({
+      data: newData,
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <h1> Calendar App </h1>
-        <EventList data={this.state.data} />
+        <EventList data={this.state.data} removeTask={this.handleClick_2.bind(this)} />
         <br/>
         <input
           onChange={this.handleInputChange.bind(this)}
