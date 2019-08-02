@@ -1,4 +1,5 @@
 import React, { Component} from "react";
+import TaskAdder from './taskAdder';
 
 class EventList extends Component {
   constructor(props) {
@@ -26,105 +27,25 @@ class EventList extends Component {
     this.handleClick_13 = this.handleClick_13.bind(this);
   }
 
-  handleClick(e) {
-    e.preventDefault();
-    this.setState({
-      showAddToday: true,
-    });
-  }
-
-  handleClick_2(e) {
-    e.preventDefault();
-    this.setState({
-      showAddToday: false,
-    });
-  }
-
-  handleClick_3(e) {
-    this.setState({
-      nameAddToday: e.target.value
-    });
-  }
-
-  handleClick_4() {
+  handleClick_44(name, day) {
+    let eventDate;
+    if (day === 'today') {
+      eventDate = new Date();
+    }
+    if (day === 'tomorrow') {
+      eventDate = new Date().addDays(1);
+    }
+    if (day === 'upcoming') {
+      eventDate = new Date().addDays(2);
+    }
     this.setState({
       data: [
         {
-          name: this.state.nameAddToday,
-          eventDate: new Date(),
+          name: name,
+          eventDate: eventDate,
         },
         ...this.state.data
       ],
-      showAddToday: false,
-      nameAddToday: '',
-    });
-  }
-
-  handleClick_5(e) {
-    e.preventDefault();
-    this.setState({
-      showAddTomorrow: true,
-    });
-  }
-
-  handleClick_6(e) {
-    e.preventDefault();
-    this.setState({
-      showAddTomorrow: false,
-    });
-  }
-
-  handleClick_7(e) {
-    this.setState({
-      nameAddTomorrow: e.target.value
-    });
-  }
-
-  handleClick_8() {
-    this.setState({
-      data: [
-        {
-          name: this.state.nameAddTomorrow,
-          eventDate: new Date().addDays(1),
-        },
-        ...this.state.data
-      ],
-      showAddTomorrow: false,
-      nameAddTomorrow: '',
-    });
-  }
-
-  handleClick_9(e) {
-    e.preventDefault();
-    this.setState({
-      showAddUpcoming: true,
-    });
-  }
-
-  handleClick_10(e) {
-    e.preventDefault();
-    this.setState({
-      showAddUpcoming: false,
-    });
-  }
-
-  handleClick_11(e) {
-    this.setState({
-      nameAddUpcoming: e.target.value
-    });
-  }
-
-  handleClick_12() {
-    this.setState({
-      data: [
-        {
-          name: this.state.nameAddUpcoming,
-          eventDate: new Date().addDays(2),
-        },
-        ...this.state.data
-      ],
-      showAddUpcoming: false,
-      nameAddUpcoming: '',
     });
   }
 
@@ -180,80 +101,26 @@ class EventList extends Component {
       return null;
     });
 
-    let renderAddTodayTask;
-    if (this.state.showAddToday) {
-      renderAddTodayTask = (
-        <span>
-          <input
-            onChange={this.handleClick_3.bind(this)}
-            value={this.state.nameAddToday}
-            type="text"
-            id="nameAddToday"
-            name="nameAddToday"
-          />
-        <button onClick={this.handleClick_4.bind(this)} type="button">Add</button>
-        <button onClick={this.handleClick_2.bind(this)} type="button">Cancel</button>
-        </span>
-      );
-    } else {
-      renderAddTodayTask = (
-        <button onClick={this.handleClick.bind(this)} type="button">Add</button>
-      );
-    }
-
-    let renderAddTomorrowTask;
-    if (this.state.showAddTomorrow) {
-      renderAddTomorrowTask = (
-        <span>
-          <input
-            onChange={this.handleClick_7.bind(this)}
-            value={this.state.nameAddTomorrow}
-            type="text"
-            id="nameAddTomorrow"
-            name="nameAddTomorrow"
-          />
-        <button onClick={this.handleClick_8.bind(this)} type="button">Add</button>
-        <button onClick={this.handleClick_6.bind(this)} type="button">Cancel</button>
-        </span>
-      );
-    } else {
-      renderAddTomorrowTask = (
-        <button onClick={this.handleClick_5.bind(this)} type="button">Add</button>
-      );
-    }
-
-    let renderAddUpcomingTask;
-    if (this.state.showAddUpcoming) {
-      renderAddUpcomingTask = (
-        <span>
-          <input
-            onChange={this.handleClick_11.bind(this)}
-            value={this.state.nameAddUpcoming}
-            type="text"
-            id="nameAddUpcoming"
-            name="nameAddUpcoming"
-          />
-        <button onClick={this.handleClick_12.bind(this)} type="button">Add</button>
-        <button onClick={this.handleClick_10.bind(this)} type="button">Cancel</button>
-        </span>
-      );
-    } else {
-      renderAddUpcomingTask = (
-        <button onClick={this.handleClick_9.bind(this)} type="button">Add</button>
-      );
-    }
-
     return (
       <div className="List">
-        Today {renderAddTodayTask}
+        Today <TaskAdder
+                day="today"
+                handleClick_44={this.handleClick_44.bind(this)}
+              />
         <ul>
           {todayList}
         </ul>
-        Tomorrow {renderAddTomorrowTask}
+        Tomorrow <TaskAdder
+                  day="tomorrow"
+                  handleClick_44={this.handleClick_44.bind(this)}
+                />
         <ul>
           {tomorrowList}
         </ul>
-        Upcoming {renderAddUpcomingTask}
+        Upcoming <TaskAdder
+                  day="upcoming"
+                  handleClick_44={this.handleClick_44.bind(this)}
+                />
         <ul>
           {upcomingList}
         </ul>
