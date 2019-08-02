@@ -1,4 +1,5 @@
 import React, { Component} from "react";
+import { connect } from 'react-redux';
 import TaskAdder from './taskAdder';
 
 class EventList extends Component {
@@ -101,6 +102,7 @@ class EventList extends Component {
 
     return (
       <div className="List">
+        We have { this.props.friends.current.length } friends!
         Today <TaskAdder
                 day="today"
                 handleClick_44={this.handleClick_44.bind(this)}
@@ -127,4 +129,9 @@ class EventList extends Component {
   }
 }
 
-export default EventList;
+const mapStateToProps = (state) => {
+  const { friends } = state
+  return { friends }
+};
+
+export default connect(mapStateToProps)(EventList);
