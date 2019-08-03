@@ -15,7 +15,6 @@ class MainScreen extends Component {
     this.state = {
       startDate: new Date(),
       name: 'Add task here',
-      data: [],
     };
   }
 

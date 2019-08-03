@@ -16,13 +16,6 @@ class EventList extends Component {
       today: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       tomorrow: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(1),
       upcoming: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(2),
-      data: [],
-      showAddToday: false,
-      nameAddToday: '',
-      showAddTomorrow: false,
-      nameAddTomorrow: '',
-      showAddUpcoming: false,
-      nameAddUpcoming: '',
     };
 
     this.handleRemove = this.handleRemove.bind(this);
@@ -36,8 +29,6 @@ class EventList extends Component {
     let today = this.state.today;
     let tomorrow = this.state.tomorrow;
     let upcoming = this.state.upcoming;
-
-    let fullData = [ ...this.props.data, ...this.state.data ]
 
     let todayList = this.props.data.map((el, index) => {
       if (el.eventDate >= today && el.eventDate <= tomorrow) {
