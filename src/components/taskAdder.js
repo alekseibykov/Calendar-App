@@ -1,4 +1,8 @@
 import React, { Component} from "react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { addTask, removeTask } from '../actions/actions';
 
 class TaskAdder extends Component {
   constructor(props) {
@@ -31,7 +35,17 @@ class TaskAdder extends Component {
   }
 
   handleClick_4() {
-    this.props.handleClick_44(this.state.nameAddToday, this.props.day);
+    let eventDate;
+    if (this.props.day === 'today') {
+      eventDate = new Date();
+    }
+    if (this.props.day === 'tomorrow') {
+      eventDate = new Date().addDays(1);
+    }
+    if (this.props.day === 'upcoming') {
+      eventDate = new Date().addDays(2);
+    }
+    this.props.addTask({name: this.state.nameAddToday, startDate: eventDate});
     this.setState({
       showAddToday: false,
       nameAddToday: '',
@@ -68,4 +82,16 @@ class TaskAdder extends Component {
   }
 }
 
-export default TaskAdder;
+const mapStateToProps = (state) => {
+  const { data } = state
+  return { data }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    addTask,
+    removeTask,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskAdder);

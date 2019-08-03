@@ -25,39 +25,11 @@ class EventList extends Component {
       nameAddUpcoming: '',
     };
 
-    this.handleClick_13 = this.handleClick_13.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
-  handleClick_44(name, day) {
-    let eventDate;
-    if (day === 'today') {
-      eventDate = new Date();
-    }
-    if (day === 'tomorrow') {
-      eventDate = new Date().addDays(1);
-    }
-    if (day === 'upcoming') {
-      eventDate = new Date().addDays(2);
-    }
-    this.setState({
-      data: [
-        {
-          name: name,
-          eventDate: eventDate,
-        },
-        ...this.state.data
-      ],
-    });
-  }
-
-  handleClick_13(eventDate) {
-    let newData = [];
-    this.state.data.forEach((el) => {
-      if (el.eventDate !== eventDate) {
-        newData.push(el);
-      }
-    })
-    this.setState({data: newData}, this.props.removeTask(eventDate));
+  handleRemove(eventDate) {
+    this.props.removeTask(eventDate)
   }
 
   render() {
@@ -67,33 +39,33 @@ class EventList extends Component {
 
     let fullData = [ ...this.props.data, ...this.state.data ]
 
-    let todayList = fullData.map((el, index) => {
+    let todayList = this.props.data.map((el, index) => {
       if (el.eventDate >= today && el.eventDate <= tomorrow) {
         return (
           <li key={index}>
-            {el.name} <button onClick={() => this.handleClick_13(el.eventDate)} type="button">Remove</button>
+            {el.name} <button onClick={() => this.handleRemove(el.eventDate)} type="button">Remove</button>
           </li>
         );
       }
       return null;
     });
 
-    let tomorrowList = fullData.map((el, index) => {
+    let tomorrowList = this.props.data.map((el, index) => {
       if (el.eventDate >= tomorrow && el.eventDate <= upcoming) {
         return (
           <li key={index}>
-            {el.name} <button onClick={() => this.handleClick_13(el.eventDate)} type="button">Remove</button>
+            {el.name} <button onClick={() => this.handleRemove(el.eventDate)} type="button">Remove</button>
           </li>
         );
       }
       return null;
     });
 
-    let upcomingList = fullData.map((el, index) => {
+    let upcomingList = this.props.data.map((el, index) => {
       if (el.eventDate >= upcoming) {
         return (
           <li key={index}>
-            {el.name} <button onClick={() => this.handleClick_13(el.eventDate)} type="button">Remove</button>
+            {el.name} <button onClick={() => this.handleRemove(el.eventDate)} type="button">Remove</button>
           </li>
         );
       }
@@ -102,25 +74,15 @@ class EventList extends Component {
 
     return (
       <div className="List">
-        We have { this.props.friends.current.length } friends!
-        Today <TaskAdder
-                day="today"
-                handleClick_44={this.handleClick_44.bind(this)}
-              />
+        Today <TaskAdder day="today" />
         <ul>
           {todayList}
         </ul>
-        Tomorrow <TaskAdder
-                  day="tomorrow"
-                  handleClick_44={this.handleClick_44.bind(this)}
-                />
+        Tomorrow <TaskAdder day="tomorrow" />
         <ul>
           {tomorrowList}
         </ul>
-        Upcoming <TaskAdder
-                  day="upcoming"
-                  handleClick_44={this.handleClick_44.bind(this)}
-                />
+        Upcoming <TaskAdder day="upcoming" />
         <ul>
           {upcomingList}
         </ul>
@@ -130,8 +92,8 @@ class EventList extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { friends } = state
-  return { friends }
+  const { data } = state
+  return { data }
 };
 
 export default connect(mapStateToProps)(EventList);
