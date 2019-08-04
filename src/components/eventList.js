@@ -30,6 +30,7 @@ class EventList extends Component {
     let tomorrow = this.state.tomorrow;
     let upcoming = this.state.upcoming;
 
+    // TODO NO items case
     let rawData = this.props.data;
     let data = Object.keys(rawData).map(function(key) {
       return {key: key, data: rawData[key]};
@@ -41,7 +42,7 @@ class EventList extends Component {
         return (
           <li key={el.key}>
             {el.data.name + ' '}
-            <button onClick={() => this.handleRemove(date)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );
       }
@@ -52,9 +53,9 @@ class EventList extends Component {
       let date = new Date(el.data.eventDate);
       if (date >= tomorrow && date <= upcoming) {
         return (
-          <li key={index}>
+          <li key={el.key}>
             {el.data.name + ' '}
-            <button onClick={() => this.handleRemove(date)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );
       }
@@ -65,9 +66,9 @@ class EventList extends Component {
       let date = new Date(el.data.eventDate);
       if (date >= upcoming) {
         return (
-          <li key={index}>
+          <li key={el.key}>
             {el.data.name + ' '}
-            <button onClick={() => this.handleRemove(date)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );
       }

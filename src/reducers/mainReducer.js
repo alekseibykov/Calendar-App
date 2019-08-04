@@ -10,17 +10,11 @@ const mainReducer = (state = INITIAL_STATE, action) => {
     case 'FETCH_TODOS':
       return action.payload;
     case 'ADD_TASK':
-      return state
+      return state;
     case 'REMOVE_TASK':
-      let newData = [];
-      state.forEach((el) => {
-        if (el.eventDate !== action.payload) {
-          newData.push(el);
-        }
-      })
-      return newData;
+      return state;
     default:
-      return state
+      return state;
   }
 };
 

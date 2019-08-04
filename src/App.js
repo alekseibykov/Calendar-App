@@ -9,17 +9,7 @@ import MainScreen from './components/mainScreen';
 const store = createStore(friendReducer, {}, applyMiddleware(reduxThunk));
 
 class App extends Component {
-  componentDidMount() {
-
-  }
-
-  writeUserData() {
-    console.log('123');
-
-  }
-
-  render() {
-
+render() {
     return (
       <Provider store={ store }>
         <MainScreen />
