@@ -26,38 +26,48 @@ class EventList extends Component {
   }
 
   render() {
-    console.log(this.props);
     let today = this.state.today;
     let tomorrow = this.state.tomorrow;
     let upcoming = this.state.upcoming;
 
-    let todayList = this.props.data.map((el, index) => {
-      if (el.eventDate >= today && el.eventDate <= tomorrow) {
+    let rawData = this.props.data;
+    let data = Object.keys(rawData).map(function(key) {
+      return {key: key, data: rawData[key]};
+    })
+
+    let todayList = data.map((el, index) => {
+      let date = new Date(el.data.eventDate);
+      if (date >= today && date <= tomorrow) {
         return (
-          <li key={index}>
-            {el.name} <button onClick={() => this.handleRemove(el.eventDate)} type="button">Remove</button>
+          <li key={el.key}>
+            {el.data.name + ' '}
+            <button onClick={() => this.handleRemove(date)} type="button">Remove</button>
           </li>
         );
       }
       return null;
     });
 
-    let tomorrowList = this.props.data.map((el, index) => {
-      if (el.eventDate >= tomorrow && el.eventDate <= upcoming) {
+    let tomorrowList = data.map((el, index) => {
+      let date = new Date(el.data.eventDate);
+      if (date >= tomorrow && date <= upcoming) {
         return (
           <li key={index}>
-            {el.name} <button onClick={() => this.handleRemove(el.eventDate)} type="button">Remove</button>
+            {el.data.name + ' '}
+            <button onClick={() => this.handleRemove(date)} type="button">Remove</button>
           </li>
         );
       }
       return null;
     });
 
-    let upcomingList = this.props.data.map((el, index) => {
-      if (el.eventDate >= upcoming) {
+    let upcomingList = data.map((el, index) => {
+      let date = new Date(el.data.eventDate);
+      if (date >= upcoming) {
         return (
           <li key={index}>
-            {el.name} <button onClick={() => this.handleRemove(el.eventDate)} type="button">Remove</button>
+            {el.data.name + ' '}
+            <button onClick={() => this.handleRemove(date)} type="button">Remove</button>
           </li>
         );
       }

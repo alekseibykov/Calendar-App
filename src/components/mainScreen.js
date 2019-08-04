@@ -19,7 +19,7 @@ class MainScreen extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchToDos();
+    this.props.fetchToDos();
   }
 
   handleChange(date) {
