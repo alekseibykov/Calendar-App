@@ -10,16 +10,7 @@ const mainReducer = (state = INITIAL_STATE, action) => {
     case 'FETCH_TODOS':
       return action.payload;
     case 'ADD_TASK':
-      let { name, startDate } = action.payload;
-      // firebase.database().ref().child('data').push({name, eventDate: startDate.toString()});
-
-      return [
-        ...state,
-        {
-          name: action.payload.name,
-          eventDate: action.payload.startDate,
-        }
-      ];
+      return state
     case 'REMOVE_TASK':
       let newData = [];
       state.forEach((el) => {
