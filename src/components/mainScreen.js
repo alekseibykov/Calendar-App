@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addTask, removeTask } from '../actions/actions';
+import { addTask, removeTask, fetchToDos } from '../actions/actions';
 import EventList from './eventList';
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,6 +16,10 @@ class MainScreen extends Component {
       startDate: new Date(),
       name: 'Add task here',
     };
+  }
+
+  componentDidMount() {
+    // this.props.fetchToDos();
   }
 
   handleChange(date) {
@@ -56,7 +60,7 @@ class MainScreen extends Component {
     return (
       <div className="App">
         <h1> Calendar App </h1>
-        <EventList data={this.state.data} removeTask={this.handleClick_2.bind(this)} />
+        <EventList removeTask={this.handleClick_2.bind(this)} />
         <br/>
         <input
           onChange={this.handleInputChange.bind(this)}
@@ -84,6 +88,7 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     addTask,
     removeTask,
+    fetchToDos,
   }, dispatch)
 );
 

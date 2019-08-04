@@ -1,15 +1,25 @@
 import React, { Component} from "react";
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware  } from 'redux';
+import reduxThunk from 'redux-thunk';
 
 import friendReducer from './reducers/mainReducer';
 import MainScreen from './components/mainScreen';
 
-const store = createStore(friendReducer);
+const store = createStore(friendReducer, {}, applyMiddleware(reduxThunk));
 
 class App extends Component {
+  componentDidMount() {
+
+  }
+
+  writeUserData() {
+    console.log('123');
+
+  }
 
   render() {
+
     return (
       <Provider store={ store }>
         <MainScreen />

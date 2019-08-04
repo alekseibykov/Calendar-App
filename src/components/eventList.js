@@ -26,6 +26,7 @@ class EventList extends Component {
   }
 
   render() {
+    console.log(this.props);
     let today = this.state.today;
     let tomorrow = this.state.tomorrow;
     let upcoming = this.state.upcoming;
