@@ -19,10 +19,6 @@ class MainScreen extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchToDos();
-  }
-
   handleChange(date) {
     this.setState({
       startDate: date
@@ -94,7 +90,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-// export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
-
-import { withRouter } from 'react-router-dom'
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);

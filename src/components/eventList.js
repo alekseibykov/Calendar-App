@@ -5,13 +5,6 @@ import TaskAdder from './taskAdder';
 class EventList extends Component {
   constructor(props) {
     super(props);
-
-    Date.prototype.addDays = function(days) {
-      let date = new Date(this.valueOf());
-      date.setDate(date.getDate() + days);
-      return date;
-    }
-
     this.state = {
       today: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       tomorrow: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(1),
@@ -62,6 +55,7 @@ class EventList extends Component {
       return null;
     });
 
+    // TODO upcoming should be no date insted of today + 2
     let upcomingList = data.map((el, index) => {
       let date = new Date(el.data.eventDate);
       if (date >= upcoming) {
