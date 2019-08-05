@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { addTask, removeTask, fetchToDos } from '../actions/actions';
 import EventList from './eventList';
+import Footer from './footer';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
@@ -74,6 +75,7 @@ class MainScreen extends Component {
           onChange={this.handleChange.bind(this)}
         />
         <button onClick={this.handleClick.bind(this)} type="button">Add</button>
+        <Footer />
       </div>
     );
   }
@@ -92,4 +94,7 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+// export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+
+import { withRouter } from 'react-router-dom'
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainScreen))
