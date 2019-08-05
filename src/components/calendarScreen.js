@@ -44,15 +44,14 @@ class CalendarScreen extends Component {
           selected={this.state.startDate}
           onChange={this.handleChange.bind(this)}
           highlightDates={this.highlightWithRanges}
-          placeholderText="This highlight two ranges with custom classes"
         />
         <DayTasks startDate={this.state.startDate} />
         <br/>
         <br/>
         <nav>
           <Link to="/">Main </Link>
+          <br />
           <Link to="/calendar/">Calendar </Link>
-          <Link to="/settings/">Settings</Link>
         </nav>
       </div>
     );

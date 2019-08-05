@@ -12,11 +12,10 @@ class Footer extends Component {
       <nav>
         <br/>
         <Link to="/">Main </Link>
+        <br />
         <Link to="/calendar/">Calendar </Link>
-        <Link to="/settings/">Settings</Link>
       </nav>
     );
-
   }
 }
 
