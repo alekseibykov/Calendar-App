@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import { addTask, removeTask, fetchToDos } from '../actions/actions';
+import DayTasks from './DayTasks';
 
 class CalendarScreen extends Component {
   constructor(props) {
@@ -26,9 +27,6 @@ class CalendarScreen extends Component {
 
     this.highlightWithRanges = [
       { "react-datepicker__day--highlighted-custom-1": highlightedDates },
-      { "react-datepicker__day--highlighted-custom-2": [
-        new Date().addDays(4), ]
-      }
     ];
   }
 
@@ -49,6 +47,7 @@ class CalendarScreen extends Component {
           highlightDates={this.highlightWithRanges}
           placeholderText="This highlight two ranges with custom classes"
         />
+        <DayTasks startDate={this.state.startDate} />
         <br/>
         <br/>
         <nav>

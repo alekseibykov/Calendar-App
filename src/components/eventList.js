@@ -5,12 +5,6 @@ import TaskAdder from './taskAdder';
 class EventList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      today: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-      tomorrow: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(1),
-      upcoming: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).addDays(2),
-    };
-
     this.handleRemove = this.handleRemove.bind(this);
   }
 
@@ -19,9 +13,9 @@ class EventList extends Component {
   }
 
   render() {
-    let today = this.state.today;
-    let tomorrow = this.state.tomorrow;
-    let upcoming = this.state.upcoming;
+    let today = this.props.dates.today;
+    let tomorrow = this.props.dates.tomorrow;
+    let upcoming = this.props.dates.upcoming;
 
     // TODO NO items case
     let rawData = this.props.data;
@@ -89,8 +83,8 @@ class EventList extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { data } = state
-  return { data }
+  const { data, dates } = state
+  return { data, dates }
 };
 
 export default connect(mapStateToProps)(EventList);

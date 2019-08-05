@@ -5,9 +5,9 @@ import { createStore, applyMiddleware  } from 'redux';
 import reduxThunk from 'redux-thunk';
 
 import App from "./App.js";
-import friendReducer from './reducers/mainReducer';
+import mainReducer from './reducers';
 
-const store = createStore(friendReducer, {}, applyMiddleware(reduxThunk));
+const store = createStore(mainReducer, {}, applyMiddleware(reduxThunk));
 
 const Root = () => {
   return (
