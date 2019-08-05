@@ -13,7 +13,15 @@ class CalendarScreen extends Component {
     this.state = {
       startDate: new Date(),
     };
+  }
 
+  handleChange(date) {
+    this.setState({
+      startDate: date
+    });
+  }
+
+  render() {
     let rawData = this.props.data;
     let data = Object.keys(rawData).map(function(key) {
       return {key: key, data: rawData[key]};
@@ -28,15 +36,6 @@ class CalendarScreen extends Component {
     this.highlightWithRanges = [
       { "react-datepicker__day--highlighted-custom-1": highlightedDates },
     ];
-  }
-
-  handleChange(date) {
-    this.setState({
-      startDate: date
-    });
-  }
-
-  render() {
     return (
       <div>
         <h1> Calendar Screen </h1>

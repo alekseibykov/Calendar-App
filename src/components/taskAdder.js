@@ -36,6 +36,9 @@ class TaskAdder extends Component {
 
   handleClick_4() {
     let eventDate;
+    if (this.props.day instanceof Date) {
+      eventDate = this.props.day;
+    }
     if (this.props.day === 'today') {
       eventDate = new Date();
     }

@@ -1,6 +1,7 @@
 const INITIAL_STATE = [];
 
 export const tasksReducer = (state = INITIAL_STATE, action) => {
+  console.log(action.type);
   switch (action.type) {
     case 'FETCH_TASKS':
       return action.payload;

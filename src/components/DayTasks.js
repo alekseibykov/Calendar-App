@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { addTask, removeTask } from '../actions/actions';
+import TaskAdder from './taskAdder';
 
 class DayTasks extends Component {
   handleRemove(eventDate) {
@@ -36,8 +37,9 @@ class DayTasks extends Component {
     return (
       <div>
         <h2>
-          Tasks for this day
+          Tasks for this day <TaskAdder day={this.props.startDate} />
         </h2>
+
         {this.renderTasks()}
       </div>
     );
