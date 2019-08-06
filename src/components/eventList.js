@@ -23,6 +23,7 @@ class EventList extends Component {
       return {key: key, data: rawData[key]};
     })
 
+    // TODO Editing tasks by clicking on a task
     let todayList = data.map((el, index) => {
       let date = new Date(el.data.eventDate);
       if (date >= today && date <= tomorrow) {

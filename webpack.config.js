@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
@@ -30,4 +31,7 @@ module.exports = {
     publicPath: "http://localhost:3000/dist/",
     historyApiFallback: true,
   },
+  plugins: [
+    new Dotenv()
+  ]
 };
