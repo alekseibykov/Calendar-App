@@ -1,15 +1,45 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
+import ReactModal from 'react-modal';
+
 import TaskAdder from './taskAdder';
 
 class EventList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showModal: false
+    };
+
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
   handleRemove(eventDate) {
     this.props.removeTask(eventDate)
+  }
+
+  handleOpenModal() {
+    this.setState({ showModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
+
+  renderModal() {
+    let el = document.getElementById("root");
+    return (
+      <ReactModal
+        isOpen={this.state.showModal}
+        contentLabel="Minimal Modal Example"
+        appElement={el}
+        onRequestClose={this.handleCloseModal}
+      >
+        <button onClick={this.handleCloseModal}>Close Modal</button>
+      </ReactModal>
+    );
   }
 
   render() {
@@ -29,7 +59,9 @@ class EventList extends Component {
       if (date >= today && date <= tomorrow) {
         return (
           <li key={el.key}>
-            {el.data.name + ' '}
+            <span onClick={() => this.handleOpenModal(el.key)}>
+              {el.data.name + ' '}
+            </span>
             <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );
@@ -66,6 +98,7 @@ class EventList extends Component {
 
     return (
       <div className="List">
+        {this.renderModal()}
         Today <TaskAdder day="today" />
         <ul>
           {todayList}
