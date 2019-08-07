@@ -1,14 +1,15 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
-import ReactModal from 'react-modal';
 
 import TaskAdder from './taskAdder';
+import ModalEdit from './modalEdit';
 
 class EventList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      modalKey: '',
     };
 
     this.handleRemove = this.handleRemove.bind(this);
@@ -20,26 +21,12 @@ class EventList extends Component {
     this.props.removeTask(eventDate)
   }
 
-  handleOpenModal() {
-    this.setState({ showModal: true });
+  handleOpenModal(key) {
+    this.setState({ showModal: true, modalKey: key });
   }
 
   handleCloseModal() {
     this.setState({ showModal: false });
-  }
-
-  renderModal() {
-    let el = document.getElementById("root");
-    return (
-      <ReactModal
-        isOpen={this.state.showModal}
-        contentLabel="Minimal Modal Example"
-        appElement={el}
-        onRequestClose={this.handleCloseModal}
-      >
-        <button onClick={this.handleCloseModal}>Close Modal</button>
-      </ReactModal>
-    );
   }
 
   render() {
@@ -98,7 +85,12 @@ class EventList extends Component {
 
     return (
       <div className="List">
-        {this.renderModal()}
+        <ModalEdit
+          handleOpenModal={this.handleOpenModal}
+          handleCloseModal={this.handleCloseModal}
+          showModal={this.state.showModal}
+          modalKey={this.state.modalKey}
+        />
         Today <TaskAdder day="today" />
         <ul>
           {todayList}

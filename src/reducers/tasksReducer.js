@@ -9,6 +9,8 @@ export const tasksReducer = (state = INITIAL_STATE, action) => {
       return state;
     case 'REMOVE_TASK':
       return state;
+    case 'CHANGE_TASK_NAME':
+      return state;
     default:
       return state;
   }

@@ -51,3 +51,11 @@ export const removeTask = (dateId) => async dispatch => {
     });
   });
 };
+
+export const changeTaskName = (currentTaskObject) => async dispatch => {
+  database.ref().child('data/' + currentTaskObject.key).update({ name: currentTaskObject.name }, (snap) => {
+    dispatch({
+      type: 'CHANGE_TASK_NAME'
+    });
+  })
+};
