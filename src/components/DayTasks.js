@@ -43,7 +43,7 @@ class DayTasks extends Component {
       let date = new Date(el.data.eventDate);
       if (date >= today && date <= tomorrow) {
         return (
-          <li key={el.key}>
+          <li className="task_item" key={el.key}>
             <span onClick={() => this.handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
