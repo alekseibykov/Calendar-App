@@ -40,7 +40,6 @@ class EventList extends Component {
       return {key: key, data: rawData[key]};
     })
 
-    // TODO Editing tasks by clicking on a task
     let todayList = data.map((el, index) => {
       let date = new Date(el.data.eventDate);
       if (date >= today && date <= tomorrow) {
@@ -61,7 +60,9 @@ class EventList extends Component {
       if (date >= tomorrow && date <= upcoming) {
         return (
           <li key={el.key}>
-            {el.data.name + ' '}
+            <span onClick={() => this.handleOpenModal(el.key)}>
+              {el.data.name + ' '}
+            </span>
             <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );
@@ -75,7 +76,9 @@ class EventList extends Component {
       if (date >= upcoming) {
         return (
           <li key={el.key}>
-            {el.data.name + ' '}
+            <span onClick={() => this.handleOpenModal(el.key)}>
+              {el.data.name + ' '}
+            </span>
             <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );

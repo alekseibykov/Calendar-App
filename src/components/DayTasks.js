@@ -5,10 +5,30 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { addTask, removeTask } from '../actions/actions';
 import TaskAdder from './taskAdder';
+import ModalEdit from './modalEdit';
 
 class DayTasks extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
+      modalKey: '',
+    };
+
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+
   handleRemove(eventDate) {
     this.props.removeTask(eventDate)
+  }
+
+  handleOpenModal(key) {
+    this.setState({ showModal: true, modalKey: key });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
   }
 
   renderTasks() {
@@ -24,7 +44,9 @@ class DayTasks extends Component {
       if (date >= today && date <= tomorrow) {
         return (
           <li key={el.key}>
-            {el.data.name + ' '}
+            <span onClick={() => this.handleOpenModal(el.key)}>
+              {el.data.name + ' '}
+            </span>
             <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
           </li>
         );
@@ -39,7 +61,12 @@ class DayTasks extends Component {
         <h2>
           Tasks for this day <TaskAdder day={this.props.startDate} />
         </h2>
-
+        <ModalEdit
+          handleOpenModal={this.handleOpenModal}
+          handleCloseModal={this.handleCloseModal}
+          showModal={this.state.showModal}
+          modalKey={this.state.modalKey}
+        />
         {this.renderTasks()}
       </div>
     );

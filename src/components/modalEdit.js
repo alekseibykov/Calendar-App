@@ -48,7 +48,6 @@ class ModalEdit extends Component {
   }
 
   render() {
-    console.log(this.props);
     let el = document.getElementById("root");
     let date = new Date(this.state.startDate ?
             this.state.startDate :

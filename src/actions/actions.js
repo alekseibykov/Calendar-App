@@ -61,7 +61,6 @@ export const changeTaskName = (currentTaskObject) => async dispatch => {
 };
 
 export const changeTaskDate = (currentTaskObject) => async dispatch => {
-  console.log(currentTaskObject);
   database.ref().child('data/' + currentTaskObject.key).update({ eventDate: currentTaskObject.date.toString() }, (snap) => {
     dispatch({
       type: 'CHANGE_TASK_DATE'
