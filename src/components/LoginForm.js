@@ -19,7 +19,7 @@ class LoginForm extends Component {
 
     this.setState({ error: '', loading: true });
     await firebase.auth().signInWithEmailAndPassword(email, password);
-    // redirecct
+    // auto redirect on redux store change
   }
 
   handleEmailChange(e) {
@@ -33,15 +33,6 @@ class LoginForm extends Component {
       password: e.target.value
     });
   }
-
-  // onLoginSuccess() {
-  //   this.setState({
-  //     email: '',
-  //     password: '',
-  //     loading: false,
-  //     error: ''
-  //   });
-  // }
 
   onLoginFail() {
     this.setState({ error: 'Authentication Failed', loading: false });

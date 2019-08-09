@@ -13,38 +13,20 @@ class HomeScreen extends Component {
     this.state = { authUser: null };
   }
 
-  componentWillMount() {
-    this.listener = firebase.auth().onAuthStateChanged ((authUser) => {
-      if (authUser) {
-        this.setState({ authUser });
-      } else {
-        this.setState({ authUser: false });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.listener();
-  }
-
   renderMainScreen() {
-    if (this.state.authUser) {
+    let {authUser} = this.props;
+    if (authUser) {
       return (
         <HomeContent />
       );
-    } else if (this.state.authUser === false) {
-      return (
-        <LoginForm  />
-      );
     } else {
       return (
-        <div>Loading</div>
+        <LoginForm  />
       );
     }
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
         { this.renderMainScreen() }

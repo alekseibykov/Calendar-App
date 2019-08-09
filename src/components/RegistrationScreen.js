@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import { Link, Redirect  } from "react-router-dom";
+import { connect } from 'react-redux';
 
 class RegistrationScreen extends Component {
   constructor(props) {
@@ -10,27 +11,11 @@ class RegistrationScreen extends Component {
       email: 'Email',
       password: 'Password',
       name: 'Your name',
-      redirect: false,
-      loggedIn: null,
     };
   }
 
-  componentWillMount() {
-    this.listener = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ loggedIn: true });
-      } else {
-        this.setState({ loggedIn: false });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.listener();
-  }
-
   renderRedirect() {
-    if (this.state.loggedIn) {
+    if (this.props.authUser) {
       return <Redirect to='/' />
     }
   }
@@ -56,15 +41,10 @@ class RegistrationScreen extends Component {
   onPress() {
     const { email, password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
-    // .then(() => {
-    //   console.log('redirect');
-    //   this.setState({ redirect: true })
-    // })
     .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-
       console.log(errorMessage);
     });
   }
@@ -103,4 +83,8 @@ class RegistrationScreen extends Component {
   }
 }
 
-export default RegistrationScreen;
+const mapStateToProps = state => ({
+  authUser: state.sessionState.authUser,
+});
+
+export default connect(mapStateToProps)(RegistrationScreen);
