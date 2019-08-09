@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
+import { connect } from 'react-redux';
 
 import LoginForm from './LoginForm';
 import HomeContent from './HomeContent';
@@ -13,7 +14,7 @@ class HomeScreen extends Component {
   }
 
   componentWillMount() {
-    this.listener = firebase.auth().onAuthStateChanged((authUser) => {
+    this.listener = firebase.auth().onAuthStateChanged ((authUser) => {
       if (authUser) {
         this.setState({ authUser });
       } else {
@@ -43,6 +44,7 @@ class HomeScreen extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div>
         { this.renderMainScreen() }
@@ -51,4 +53,8 @@ class HomeScreen extends Component {
   }
 }
 
-export default HomeScreen;
+const mapStateToProps = state => ({
+  authUser: state.sessionState.authUser,
+});
+
+export default connect(mapStateToProps)(HomeScreen);

@@ -1,5 +1,5 @@
 import React, { Component} from "react";
-import { bindActionCreators  } from 'redux';
+import { bindActionCreators, compose  } from 'redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ import CalendarScreen from './components/CalendarScreen';
 import { addTask, removeTask, fetchToDos } from './actions/actions';
 import HomeScreen from './components/HomeScreen';
 import RegistrationScreen from './components/RegistrationScreen';
+import withAuthentication  from './components/Session/withAuthentication';
 
 
 class App extends Component {
@@ -44,4 +45,11 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default compose(
+  withAuthentication,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(App);
