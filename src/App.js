@@ -3,8 +3,8 @@ import { bindActionCreators  } from 'redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import MainScreen from './components/mainScreen';
-import CalendarScreen from './components/calendarScreen';
+import MainScreen from './components/MainScreen';
+import CalendarScreen from './components/CalendarScreen';
 import { addTask, removeTask, fetchToDos } from './actions/actions';
 import HomeScreen from './components/HomeScreen';
 import RegistrationScreen from './components/RegistrationScreen';

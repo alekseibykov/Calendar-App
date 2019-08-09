@@ -1,6 +1,6 @@
 const INITIAL_STATE = { show: null };
 
-export default function ItemReducer(state = INITIAL_STATE, action) {
+export const itemReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case 'EXPAND_ITEM':
       const newState = Object.assign({}, state);

@@ -6,8 +6,8 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 
 import { addTask, removeTask, fetchToDos } from '../actions/actions';
-import EventList from './eventList';
-import Footer from './footer';
+import EventList from './EventList';
+import Footer from './Footer';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";

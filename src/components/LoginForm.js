@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase/app";
-import "firebase/database";
 import "firebase/auth";
 import { Link } from "react-router-dom";
 
@@ -53,7 +52,7 @@ class LoginForm extends Component {
     }
 
     return (
-      <button onClick={this.onPress.bind(this)} style={{ height: 70 }}>
+      <button onClick={this.onPress.bind(this)} >
         Log In
       </button>
     );
@@ -61,7 +60,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <div style={{ flex: 1 }}>
+      <div>
         <input
           onChange={this.handleEmailChange.bind(this)}
           value={this.state.email}
@@ -69,6 +68,8 @@ class LoginForm extends Component {
           id="name"
           name="name"
         />
+        <br/>
+        <br/>
         <input
           onChange={this.handlePasswordChange.bind(this)}
           value={this.state.password}
@@ -76,6 +77,8 @@ class LoginForm extends Component {
           id="password"
           name="password"
         />
+        <br/>
+        <br/>
         <div style={styles.errorTextStyle}>
           {this.state.error}
         </div>

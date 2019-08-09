@@ -1,8 +1,8 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
 
-import TaskAdder from './taskAdder';
-import ModalEdit from './modalEdit';
+import TaskAdder from './TaskAdder';
+import ModalEdit from './ModalEdit';
 
 class EventList extends Component {
   constructor(props) {

@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { addTask, removeTask } from '../actions/actions';
-import TaskAdder from './taskAdder';
-import ModalEdit from './modalEdit';
+import TaskAdder from './TaskAdder';
+import ModalEdit from './ModalEdit';
 
 class DayTasks extends Component {
   constructor(props) {

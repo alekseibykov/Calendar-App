@@ -4,8 +4,7 @@ import "firebase/database";
 import "firebase/auth";
 
 import LoginForm from './LoginForm';
-import ContentScreen from './ContentScreen';
-import MainScreen from './mainScreen';
+import MainScreen from './MainScreen';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -43,7 +42,6 @@ class HomeScreen extends Component {
   render() {
     return (
       <div>
-        <h1>Authentication</h1>
         { this.renderMainScreen() }
       </div>
     );
