@@ -2,6 +2,8 @@ import React, { Component} from "react";
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 import { addTask, removeTask, fetchToDos } from '../actions/actions';
 import EventList from './eventList';
@@ -56,7 +58,13 @@ class MainScreen extends Component {
   render() {
     return (
       <div className="App">
-        <h1> Calendar App </h1>
+        <h1>
+          Calendar App
+          <button onClick={() => firebase.auth().signOut()}>
+            Log Out
+          </button>
+        </h1>
+
         <EventList removeTask={this.handleClick_2.bind(this)} />
         <br/>
         <input

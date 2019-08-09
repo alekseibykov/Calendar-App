@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import MainScreen from './components/mainScreen';
 import CalendarScreen from './components/calendarScreen';
 import { addTask, removeTask, fetchToDos } from './actions/actions';
+import HomeScreen from './components/HomeScreen';
+import RegistrationScreen from './components/RegistrationScreen';
 
 
 class App extends Component {
@@ -21,7 +23,9 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route exact path="/" component={MainScreen} />
+        <Route exact path="/" component={HomeScreen} />
+        <Route exact path="/registration/" component={RegistrationScreen} />
+        <Route exact path="/old/" component={MainScreen} />
         <Route path="/calendar/" component={CalendarScreen} />
         <Route path="/settings/" component={CalendarScreen} />
       </Router>
