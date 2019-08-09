@@ -4,31 +4,34 @@ import "firebase/database";
 import "firebase/auth";
 
 import LoginForm from './LoginForm';
-import MainScreen from './MainScreen';
+import HomeContent from './HomeContent';
 
 class HomeScreen extends Component {
   constructor(props) {
     super();
-    this.state = { loggedIn: null };
+    this.state = { authUser: null };
   }
 
   componentWillMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ loggedIn: true });
+    this.listener = firebase.auth().onAuthStateChanged((authUser) => {
+      if (authUser) {
+        this.setState({ authUser });
       } else {
-        this.setState({ loggedIn: false });
+        this.setState({ authUser: false });
       }
     });
   }
 
+  componentWillUnmount() {
+    this.listener();
+  }
+
   renderMainScreen() {
-    let self = this;
-    if (this.state.loggedIn) {
+    if (this.state.authUser) {
       return (
-        <MainScreen />
+        <HomeContent />
       );
-    } else if (this.state.loggedIn === false) {
+    } else if (this.state.authUser === false) {
       return (
         <LoginForm  />
       );

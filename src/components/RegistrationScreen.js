@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, Redirect  } from "react-router-dom";
 
 class RegistrationScreen extends Component {
   constructor(props) {
@@ -9,8 +9,30 @@ class RegistrationScreen extends Component {
     this.state = {
       email: 'Email',
       password: 'Password',
-      name: 'Your name'
+      name: 'Your name',
+      redirect: false,
+      loggedIn: null,
     };
+  }
+
+  componentWillMount() {
+    this.listener = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ loggedIn: true });
+      } else {
+        this.setState({ loggedIn: false });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.listener();
+  }
+
+  renderRedirect() {
+    if (this.state.loggedIn) {
+      return <Redirect to='/' />
+    }
   }
 
   handleEmailChange(e) {
@@ -33,20 +55,24 @@ class RegistrationScreen extends Component {
 
   onPress() {
     const { email, password } = this.state;
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    // .then(() => {
+    //   console.log('redirect');
+    //   this.setState({ redirect: true })
+    // })
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
 
       console.log(errorMessage);
     });
-
-    console.log(this.state.email);
   }
 
   render() {
     return (
       <div>
+        {this.renderRedirect()}
         <input
           onChange={this.handleNameChange.bind(this)}
           value={this.state.name}

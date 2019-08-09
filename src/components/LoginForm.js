@@ -19,6 +19,7 @@ class LoginForm extends Component {
 
     this.setState({ error: '', loading: true });
     await firebase.auth().signInWithEmailAndPassword(email, password);
+    // redirecct
   }
 
   handleEmailChange(e) {

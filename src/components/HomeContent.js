@@ -12,7 +12,7 @@ import Footer from './Footer';
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 
-class MainScreen extends Component {
+class HomeContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -98,4 +98,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContent);

@@ -3,7 +3,7 @@ import { bindActionCreators  } from 'redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import MainScreen from './components/MainScreen';
+import HomeContent from './components/HomeContent';
 import CalendarScreen from './components/CalendarScreen';
 import { addTask, removeTask, fetchToDos } from './actions/actions';
 import HomeScreen from './components/HomeScreen';
@@ -25,9 +25,7 @@ class App extends Component {
       <Router>
         <Route exact path="/" component={HomeScreen} />
         <Route exact path="/registration/" component={RegistrationScreen} />
-        <Route exact path="/old/" component={MainScreen} />
         <Route path="/calendar/" component={CalendarScreen} />
-        <Route path="/settings/" component={CalendarScreen} />
       </Router>
     );
   }
