@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/database";
 import { Link, Redirect  } from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -41,6 +42,10 @@ class RegistrationScreen extends Component {
   onPress() {
     const { email, password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((snap) => {
+      console.log(snap.user.uid);
+      firebase.database().ref().child('users/' + snap.user.uid).set(({email: snap.user.email, uid: snap.user.uid }))
+    })
     .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;

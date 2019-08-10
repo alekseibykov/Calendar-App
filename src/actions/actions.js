@@ -27,8 +27,8 @@ let todosRef = database.ref().child('data');
 // let testDate = new Date().toString();
 // firebase.database().ref().child('data').push({name: 'do stuff', eventDate: testDate})
 
-export const fetchToDos = () => async dispatch => {
-  todosRef.on("value", snapshot => {
+export const fetchToDos = (uid) => async dispatch => {
+  database.ref().child('users/' + uid + '/tasks/').on("value", snapshot => {
     dispatch({
       type: 'FETCH_TASKS',
       payload: snapshot.val()
@@ -37,7 +37,7 @@ export const fetchToDos = () => async dispatch => {
 };
 
 export const addTask = (taskObject) => async dispatch => {
-  todosRef.push({name: taskObject.name, eventDate: taskObject.startDate.toString()}, (snap) => {
+  database.ref().child('users/' + taskObject.uid + '/tasks/').push({name: taskObject.name, eventDate: taskObject.startDate.toString()}, (snap) => {
     dispatch({
       type: 'ADD_TASK'
     });

@@ -45,7 +45,11 @@ class HomeContent extends Component {
       nd.getSeconds(),
       nd.getMilliseconds()
     );
-    this.props.addTask({ name: this.state.name, startDate: dateId});
+    this.props.addTask({
+      name: this.state.name,
+      startDate: dateId,
+      uid: this.props.sessionState.authUser.uid
+    });
     this.setState({
       name: '',
     });
@@ -64,6 +68,9 @@ class HomeContent extends Component {
             Log Out
           </button>
         </h1>
+        <h3>
+          Current user:
+        </h3>
 
         <EventList removeTask={this.handleClick_2.bind(this)} />
         <br/>
@@ -86,8 +93,8 @@ class HomeContent extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { data } = state
-  return { data }
+  const { data, sessionState } = state
+  return { data, sessionState }
 };
 
 const mapDispatchToProps = dispatch => (

@@ -48,11 +48,15 @@ class ModalEdit extends Component {
   }
 
   render() {
+    let data = this.props.data;
+    if (data === null) {
+      data = [];
+    }
     let el = document.getElementById("root");
     let date = new Date(this.state.startDate ?
             this.state.startDate :
-            this.props.data[this.props.modalKey] ?
-            this.props.data[this.props.modalKey].eventDate
+            data[this.props.modalKey] ?
+            data[this.props.modalKey].eventDate
             : '');
     return (
       <ReactModal
@@ -68,8 +72,8 @@ class ModalEdit extends Component {
           onChange={this.handleInputChange.bind(this)}
           value={this.state.name ?
                 this.state.name :
-                this.props.data[this.props.modalKey] ?
-                this.props.data[this.props.modalKey].name
+                data[this.props.modalKey] ?
+                data[this.props.modalKey].name
                 : ''}
           type="text"
           id="name"

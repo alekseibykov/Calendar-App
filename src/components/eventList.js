@@ -34,11 +34,16 @@ class EventList extends Component {
     let tomorrow = this.props.dates.tomorrow;
     let upcoming = this.props.dates.upcoming;
 
-    // TODO NO items case
     let rawData = this.props.data;
-    let data = Object.keys(rawData).map(function(key) {
-      return {key: key, data: rawData[key]};
-    })
+    console.log(rawData);
+    let data = [];
+    if (rawData !== null) {
+      console.log('qwe');
+      data = Object.keys(rawData).map(function(key) {
+        return {key: key, data: rawData[key]};
+      })
+    }
+
 
     let todayList = data.map((el, index) => {
       let date = new Date(el.data.eventDate);

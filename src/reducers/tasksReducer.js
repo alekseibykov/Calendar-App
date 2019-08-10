@@ -1,4 +1,4 @@
-const INITIAL_STATE = [];
+const INITIAL_STATE = null;
 
 export const tasksReducer = (state = INITIAL_STATE, action) => {
   console.log(action.type);

@@ -18,7 +18,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchToDos();
+    console.log(this.props);
+    let uid = null;
+    if (this.props.sessionState.authUser) {
+      uid = this.props.sessionState.authUser.uid;
+    }
+    this.props.fetchToDos(uid);
   }
 
   render() {
@@ -33,8 +38,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { data } = state
-  return { data }
+  const { data, sessionState } = state
+  return { data, sessionState }
 };
 
 const mapDispatchToProps = dispatch => (

@@ -48,7 +48,7 @@ class TaskAdder extends Component {
     if (this.props.day === 'upcoming') {
       eventDate = new Date().addDays(2);
     }
-    this.props.addTask({name: this.state.nameAddToday, startDate: eventDate});
+    this.props.addTask({name: this.state.nameAddToday, startDate: eventDate, uid: this.props.sessionState.authUser.uid});
     this.setState({
       showAddToday: false,
       nameAddToday: '',
@@ -86,8 +86,8 @@ class TaskAdder extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { data } = state
-  return { data }
+  const { data, sessionState } = state
+  return { data, sessionState }
 };
 
 const mapDispatchToProps = dispatch => (
