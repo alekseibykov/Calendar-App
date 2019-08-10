@@ -55,8 +55,8 @@ class HomeContent extends Component {
     });
   }
 
-  handleClick_2(eventDate) {
-    this.props.removeTask(eventDate);
+  handleClick_2(key, uid) {
+    this.props.removeTask(key, uid);
   }
 
   render() {

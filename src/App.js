@@ -18,7 +18,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     let uid = null;
     if (this.props.sessionState.authUser) {
       uid = this.props.sessionState.authUser.uid;

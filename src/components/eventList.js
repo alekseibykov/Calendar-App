@@ -17,8 +17,8 @@ class EventList extends Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  handleRemove(eventDate) {
-    this.props.removeTask(eventDate)
+  handleRemove(key, uid) {
+    this.props.removeTask(key, uid)
   }
 
   handleOpenModal(key) {
@@ -35,15 +35,14 @@ class EventList extends Component {
     let upcoming = this.props.dates.upcoming;
 
     let rawData = this.props.data;
-    console.log(rawData);
     let data = [];
     if (rawData !== null) {
-      console.log('qwe');
       data = Object.keys(rawData).map(function(key) {
         return {key: key, data: rawData[key]};
       })
     }
 
+    let uid = this.props.sessionState.authUser.uid;
 
     let todayList = data.map((el, index) => {
       let date = new Date(el.data.eventDate);
@@ -53,7 +52,7 @@ class EventList extends Component {
             <span onClick={() => this.handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key, uid)} type="button">Remove</button>
           </li>
         );
       }
@@ -68,7 +67,7 @@ class EventList extends Component {
             <span onClick={() => this.handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key, uid)} type="button">Remove</button>
           </li>
         );
       }
@@ -84,7 +83,7 @@ class EventList extends Component {
             <span onClick={() => this.handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key, uid)} type="button">Remove</button>
           </li>
         );
       }
@@ -117,8 +116,8 @@ class EventList extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { data, dates } = state
-  return { data, dates }
+  const { data, dates, sessionState } = state
+  return { data, dates, sessionState }
 };
 
 export default connect(mapStateToProps)(EventList);
