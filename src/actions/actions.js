@@ -45,8 +45,6 @@ export const addTask = (taskObject) => async dispatch => {
 };
 
 export const removeTask = (key, uid) => async dispatch => {
-  console.log(key);
-  console.log(uid);
   database.ref().child('users/' + uid + '/tasks/' + key).remove((snap) => {
     dispatch({
       type: 'REMOVE_TASK'

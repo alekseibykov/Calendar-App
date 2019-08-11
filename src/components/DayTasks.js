@@ -19,8 +19,8 @@ class DayTasks extends Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  handleRemove(eventDate) {
-    this.props.removeTask(eventDate)
+  handleRemove(key, uid) {
+    this.props.removeTask(key, uid)
   }
 
   handleOpenModal(key) {
@@ -32,14 +32,18 @@ class DayTasks extends Component {
   }
 
   renderTasks() {
-    let {data, startDate} = this.props;
+    let {startDate} = this.props;
+    let rawData = this.props.data;
+    let data = [];
+    if (rawData !== null) {
+      data = Object.keys(rawData).map(function(key) {
+        return {key: key, data: rawData[key]};
+      })
+    }
     let today = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
     let tomorrow = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()).addDays(1)
-    let newData = Object.keys(data).map(function(key) {
-      return {key: key, data: data[key]};
-    });
 
-    return newData.map((el, index) => {
+    return data.map((el, index) => {
       let date = new Date(el.data.eventDate);
       if (date >= today && date <= tomorrow) {
         return (
@@ -47,7 +51,7 @@ class DayTasks extends Component {
             <span onClick={() => this.handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key)} type="button">Remove</button>
+            <button onClick={() => this.handleRemove(el.key, this.props.sessionState.authUser.uid)} type="button">Remove</button>
           </li>
         );
       }
@@ -75,8 +79,8 @@ class DayTasks extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { data, dates } = state
-  return { data, dates }
+  const { data, dates, sessionState } = state
+  return { data, dates, sessionState }
 };
 
 const mapDispatchToProps = dispatch => (

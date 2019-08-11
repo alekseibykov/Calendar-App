@@ -23,9 +23,12 @@ class CalendarScreen extends Component {
 
   render() {
     let rawData = this.props.data;
-    let data = Object.keys(rawData).map(function(key) {
-      return {key: key, data: rawData[key]};
-    });
+    let data = [];
+    if (rawData !== null) {
+      data = Object.keys(rawData).map(function(key) {
+        return {key: key, data: rawData[key]};
+      })
+    }
 
     let highlightedDates = [];
     data.map((el, index) => {

@@ -17,15 +17,8 @@ class App extends Component {
 
   }
 
-  componentDidMount() {
-    let uid = null;
-    if (this.props.sessionState.authUser) {
-      uid = this.props.sessionState.authUser.uid;
-    }
-    this.props.fetchToDos(uid);
-  }
-
   render() {
+    console.log(this.props);
     return (
       <Router>
         <Route exact path="/" component={HomeScreen} />

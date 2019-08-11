@@ -21,6 +21,14 @@ class HomeContent extends Component {
     };
   }
 
+  componentDidMount() {
+    let uid = null;
+    if (this.props.sessionState.authUser) {
+      uid = this.props.sessionState.authUser.uid;
+    }
+    this.props.fetchToDos(uid);
+  }
+
   handleChange(date) {
     this.setState({
       startDate: date
@@ -68,9 +76,9 @@ class HomeContent extends Component {
             Log Out
           </button>
         </h1>
-        <h3>
-          Current user:
-        </h3>
+        <h4>
+          Current user: {this.props.sessionState.authUser.email}
+        </h4>
 
         <EventList removeTask={this.handleClick_2.bind(this)} />
         <br/>
