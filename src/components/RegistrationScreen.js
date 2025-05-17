@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/database";
+import { auth, database } from '../App'; // Adjusted path
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, set } from "firebase/database";
 import { Link, Redirect  } from "react-router-dom";
 import { connect } from 'react-redux';
+
+// Firebase config and initialization removed
 
 class RegistrationScreen extends Component {
   constructor(props) {
@@ -41,13 +43,16 @@ class RegistrationScreen extends Component {
 
   onPress() {
     const { email, password } = this.state;
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((snap) => {
-      console.log(snap.user.uid);
-      firebase.database().ref().child('users/' + snap.user.uid).set(({email: snap.user.email, uid: snap.user.uid }))
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(user.uid);
+      return set(ref(database, 'users/' + user.uid), ({email: user.email, uid: user.uid, name: this.state.name }));
+    })
+    .then(() => {
+      console.log("User created and data saved.");
     })
     .catch(function(error) {
-      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorMessage);
@@ -64,13 +69,15 @@ class RegistrationScreen extends Component {
           type="text"
           id="name"
           name="name"
+          placeholder="Your name"
         />
         <input
           onChange={this.handleEmailChange.bind(this)}
           value={this.state.email}
-          type="text"
+          type="email"
           id="email"
           name="email"
+          placeholder="Email"
         />
         <input
           onChange={this.handlePasswordChange.bind(this)}
@@ -78,6 +85,7 @@ class RegistrationScreen extends Component {
           type="password"
           id="password"
           name="password"
+          placeholder="Password"
         />
         <button onClick={this.onPress.bind(this)}>
           Create account

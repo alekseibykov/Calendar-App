@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import * as firebase from "firebase/app";
-import "firebase/auth";
+import { auth } from '../App'; // Adjusted path
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
+
+// Firebase config and initialization removed
 
 class LoginForm extends Component {
   constructor(props) {
@@ -18,8 +20,11 @@ class LoginForm extends Component {
     const { email, password } = this.state;
 
     this.setState({ error: '', loading: true });
-    await firebase.auth().signInWithEmailAndPassword(email, password);
-    // auto redirect on redux store change
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      this.onLoginFail(error);
+    }
   }
 
   handleEmailChange(e) {
@@ -34,13 +39,17 @@ class LoginForm extends Component {
     });
   }
 
-  onLoginFail() {
-    this.setState({ error: 'Authentication Failed', loading: false });
+  onLoginFail(error) {
+    let errorMessage = 'Authentication Failed';
+    if (error && error.message) {
+      errorMessage = error.message;
+    }
+    this.setState({ error: errorMessage, loading: false });
   }
 
   renderButton() {
     if (this.state.loading) {
-      return <div>Loading</div>;
+      return <div>Loading...</div>;
     }
 
     return (
@@ -56,9 +65,10 @@ class LoginForm extends Component {
         <input
           onChange={this.handleEmailChange.bind(this)}
           value={this.state.email}
-          type="text"
-          id="name"
-          name="name"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email"
         />
         <br/>
         <br/>
@@ -68,6 +78,7 @@ class LoginForm extends Component {
           type="password"
           id="password"
           name="password"
+          placeholder="Password"
         />
         <br/>
         <br/>

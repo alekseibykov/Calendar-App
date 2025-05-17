@@ -1,27 +1,42 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import * as firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
+// import { compose } from 'redux'; // compose seems unused
+import { auth } from '../../App'; // Adjusted path
+import { onAuthStateChanged } from "firebase/auth";
+
+// Firebase config and initialization removed
 
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
     constructor(props) {
       super(props);
-
-      this.props.onSetAuthUser(
-        JSON.parse(localStorage.getItem('authUser')),
-      );
+      const storedAuthUser = localStorage.getItem('authUser');
+      if (storedAuthUser) {
+        try {
+          this.props.onSetAuthUser(JSON.parse(storedAuthUser));
+        } catch (error) {
+          console.error("Error parsing authUser from localStorage:", error);
+          localStorage.removeItem('authUser');
+          this.props.onSetAuthUser(null);
+        }
+      } else {
+        this.props.onSetAuthUser(null);
+      }
     }
 
     componentDidMount() {
-      this.listener = firebase.auth().onAuthStateChanged(
+      this.listener = onAuthStateChanged(auth,
         authUser => {
-          localStorage.setItem('authUser', JSON.stringify(authUser));
-          this.props.onSetAuthUser(authUser);
+          if (authUser) {
+            localStorage.setItem('authUser', JSON.stringify(authUser));
+            this.props.onSetAuthUser(authUser);
+          } else {
+            localStorage.removeItem('authUser');
+            this.props.onSetAuthUser(null);
+          }
         },
-        () => {
+        error => {
+          console.error("Firebase onAuthStateChanged error:", error);
           localStorage.removeItem('authUser');
           this.props.onSetAuthUser(null);
         },
@@ -29,7 +44,9 @@ const withAuthentication = Component => {
     }
 
     componentWillUnmount() {
-      this.listener();
+      if (this.listener) {
+        this.listener();
+      }
     }
 
     render() {
@@ -43,12 +60,6 @@ const withAuthentication = Component => {
   });
 
   return connect(null, mapDispatchToProps)(WithAuthentication);
-  // return compose(
-  //   connect(
-  //     null,
-  //     mapDispatchToProps,
-  //   ),
-  // )(WithAuthentication);
 };
 
 export default withAuthentication;

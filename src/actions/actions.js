@@ -1,5 +1,5 @@
-import * as firebase from "firebase/app";
-import "firebase/database";
+import { database } from '../App'; // Adjusted path to App.js
+import { ref, onValue, push, remove, update, child } from "firebase/database"; // Keep specific database functions
 
 // Prototype extentions here
 Date.prototype.addDays = function(days) {
@@ -8,27 +8,15 @@ Date.prototype.addDays = function(days) {
   return date;
 }
 
-const config = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-// Initialize Firebase
-firebase.initializeApp(config);
-let database = firebase.database();
-let todosRef = database.ref().child('data');
+// Firebase config and initialization removed from here
 
 // Manually add item to database on refresh
 // let testDate = new Date().toString();
-// firebase.database().ref().child('data').push({name: 'do stuff', eventDate: testDate})
+// push(ref(database, 'data'), {name: 'do stuff', eventDate: testDate}); // Example of updated push
 
 export const fetchToDos = (uid) => async dispatch => {
-  database.ref().child('users/' + uid + '/tasks/').on("value", snapshot => {
+  const userTasksRef = ref(database, 'users/' + uid + '/tasks/');
+  onValue(userTasksRef, snapshot => {
     dispatch({
       type: 'FETCH_TASKS',
       payload: snapshot.val()
@@ -37,33 +25,49 @@ export const fetchToDos = (uid) => async dispatch => {
 };
 
 export const addTask = (taskObject) => async dispatch => {
-  database.ref().child('users/' + taskObject.uid + '/tasks/').push({name: taskObject.name, eventDate: taskObject.startDate.toString()}, (snap) => {
+  const userTasksRef = ref(database, 'users/' + taskObject.uid + '/tasks/');
+  push(userTasksRef, {name: taskObject.name, eventDate: taskObject.startDate.toString()}).then(() => {
     dispatch({
       type: 'ADD_TASK'
     });
-  })
+  }).catch(error => {
+    // Handle error if needed
+    console.error("Error adding task: ", error);
+  });
 };
 
 export const removeTask = (key, uid) => async dispatch => {
-  database.ref().child('users/' + uid + '/tasks/' + key).remove((snap) => {
+  const taskRef = ref(database, 'users/' + uid + '/tasks/' + key);
+  remove(taskRef).then(() => {
     dispatch({
       type: 'REMOVE_TASK'
     });
+  }).catch(error => {
+    // Handle error if needed
+    console.error("Error removing task: ", error);
   });
 };
 
 export const changeTaskName = (currentTaskObject) => async dispatch => {
-  database.ref().child('data/' + currentTaskObject.key).update({ name: currentTaskObject.name }, (snap) => {
+  const taskRef = ref(database, 'users/' + currentTaskObject.uid + '/tasks/' + currentTaskObject.key); // Assuming uid is part of currentTaskObject
+  update(taskRef, { name: currentTaskObject.name }).then(() => {
     dispatch({
       type: 'CHANGE_TASK_NAME'
     });
-  })
+  }).catch(error => {
+    // Handle error if needed
+    console.error("Error changing task name: ", error);
+  });
 };
 
 export const changeTaskDate = (currentTaskObject) => async dispatch => {
-  database.ref().child('data/' + currentTaskObject.key).update({ eventDate: currentTaskObject.date.toString() }, (snap) => {
+  const taskRef = ref(database, 'users/' + currentTaskObject.uid + '/tasks/' + currentTaskObject.key); // Assuming uid is part of currentTaskObject
+  update(taskRef, { eventDate: currentTaskObject.date.toString() }).then(() => {
     dispatch({
       type: 'CHANGE_TASK_DATE'
     });
-  })
+  }).catch(error => {
+    // Handle error if needed
+    console.error("Error changing task date: ", error);
+  });
 };

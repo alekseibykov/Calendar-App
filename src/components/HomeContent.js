@@ -2,8 +2,8 @@ import React, { Component} from "react";
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as firebase from "firebase/app";
-import "firebase/auth";
+import { auth } from '../App'; // Adjusted path
+import { signOut } from "firebase/auth";
 
 import { addTask, removeTask, fetchToDos } from '../actions/actions';
 import EventList from './EventList';
@@ -11,6 +11,8 @@ import Footer from './Footer';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
+
+// Firebase config and initialization removed
 
 class HomeContent extends Component {
   constructor(props) {
@@ -26,7 +28,11 @@ class HomeContent extends Component {
     if (this.props.sessionState.authUser) {
       uid = this.props.sessionState.authUser.uid;
     }
-    this.props.fetchToDos(uid);
+    if (uid) {
+      this.props.fetchToDos(uid);
+    } else {
+      console.log("HomeContent: No authenticated user found on mount to fetch todos for.");
+    }
   }
 
   handleChange(date) {
@@ -42,6 +48,10 @@ class HomeContent extends Component {
   }
 
   handleClick(e) {
+    if (!this.props.sessionState.authUser) {
+      console.error("Cannot add task: User not authenticated.");
+      return;
+    }
     let d = this.state.startDate;
     let nd = new Date();
     let dateId = new Date(
@@ -59,41 +69,64 @@ class HomeContent extends Component {
       uid: this.props.sessionState.authUser.uid
     });
     this.setState({
-      name: '',
+      name: ''
     });
   }
 
   handleClick_2(key, uid) {
+    if (!this.props.sessionState.authUser || this.props.sessionState.authUser.uid !== uid) {
+       console.error("Cannot remove task: User not authenticated or UID mismatch.");
+      return;
+    }
     this.props.removeTask(key, uid);
+  }
+  
+  handleSignOut() {
+    signOut(auth).then(() => {
+      console.log("User signed out successfully.");
+    }).catch((error) => {
+      console.error("Sign out error:", error);
+    });
   }
 
   render() {
+    const userEmail = this.props.sessionState.authUser ? this.props.sessionState.authUser.email : 'Guest';
+
     return (
       <div className="App">
         <h1>
           Calendar App
-          <button onClick={() => firebase.auth().signOut()}>
-            Log Out
-          </button>
+          {this.props.sessionState.authUser && (
+            <button onClick={this.handleSignOut.bind(this)}>
+              Log Out
+            </button>
+          )}
         </h1>
         <h4>
-          Current user: {this.props.sessionState.authUser.email}
+          Current user: {userEmail}
         </h4>
 
-        <EventList removeTask={this.handleClick_2.bind(this)} />
-        <br/>
-        <input
-          onChange={this.handleInputChange.bind(this)}
-          value={this.state.name}
-          type="text"
-          id="name"
-          name="name"
-        />
-        <DatePicker
-          selected={this.state.startDate}
-          onChange={this.handleChange.bind(this)}
-        />
-        <button onClick={this.handleClick.bind(this)} type="button">Add</button>
+        {this.props.sessionState.authUser ? (
+          <>
+            <EventList removeTask={this.handleClick_2.bind(this)} />
+            <br/>
+            <input
+              onChange={this.handleInputChange.bind(this)}
+              value={this.state.name}
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Add task here"
+            />
+            <DatePicker
+              selected={this.state.startDate}
+              onChange={this.handleChange.bind(this)}
+            />
+            <button onClick={this.handleClick.bind(this)} type="button">Add</button>
+          </>
+        ) : (
+          <p>Please log in to manage your tasks.</p>
+        )}
         <Footer />
       </div>
     );
