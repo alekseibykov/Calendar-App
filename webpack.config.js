@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: ['./src/index.js'],
   mode: "development",
   module: {
     rules: [
@@ -11,7 +11,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
         loader: "babel-loader",
-        options: { presets: ["@babel/env"] }
       },
       {
         test: /\.css$/,
@@ -26,9 +25,10 @@ module.exports = {
     filename: "bundle.js"
   },
   devServer: {
-    contentBase: path.join(__dirname, "public/"),
+    static: {
+      directory: path.join(__dirname, "public/"),
+    },
     port: 3000,
-    publicPath: "http://localhost:3000/dist/",
     historyApiFallback: true,
   },
   plugins: [
