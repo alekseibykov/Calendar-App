@@ -1,4 +1,4 @@
-import { database } from '../App';
+import { database } from '../App.js';
 import { ref, onValue, push, remove, update } from "firebase/database";
 
 // Prototype extentions here

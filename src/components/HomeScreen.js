@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import { connect } from 'react-redux';
 
-import LoginForm from './LoginForm';
-import HomeContent from './HomeContent';
+import LoginForm from './LoginForm.js';
+import HomeContent from './HomeContent.js';
 
 class HomeScreen extends Component {
   constructor(props) {

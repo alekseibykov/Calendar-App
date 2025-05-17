@@ -7,13 +7,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
-import { addTask, removeTask, fetchToDos } from './actions/actions';
-import withAuthentication  from './hooks/withAuthentication';
+import { addTask, removeTask, fetchToDos } from './actions/actions.js';
+import withAuthentication  from './hooks/withAuthentication.js';
 
 // Lazy load route components
-const HomeScreen = lazy(() => import('./components/HomeScreen'));
-const RegistrationScreen = lazy(() => import('./components/RegistrationScreen'));
-const CalendarScreen = lazy(() => import('./components/CalendarScreen'));
+const HomeScreen = lazy(() => import('./components/HomeScreen.js'));
+const RegistrationScreen = lazy(() => import('./components/RegistrationScreen.js'));
+const CalendarScreen = lazy(() => import('./components/CalendarScreen.js'));
 
 // --- Firebase Initialization ---
 const firebaseConfig = {

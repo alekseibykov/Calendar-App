@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import App from "./App.js";
-import mainReducer from './reducers';
+import mainReducer from './reducers/index.js';
 
 const store = configureStore({
   reducer: mainReducer,

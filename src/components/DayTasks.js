@@ -2,9 +2,9 @@ import React, { Component} from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addTask, removeTask } from '../actions/actions';
-import TaskAdder from './TaskAdder';
-import ModalEdit from './ModalEdit';
+import { addTask, removeTask } from '../actions/actions.js';
+import TaskAdder from './TaskAdder.js';
+import ModalEdit from './ModalEdit.js';
 
 class DayTasks extends Component {
   constructor(props) {

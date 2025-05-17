@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
-import { addTask, removeTask, fetchToDos } from '../actions/actions';
-import DayTasks from './DayTasks';
+import { addTask, removeTask, fetchToDos } from '../actions/actions.js';
+import DayTasks from './DayTasks.js';
 
 class CalendarScreen extends Component {
   constructor(props) {

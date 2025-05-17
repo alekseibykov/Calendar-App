@@ -1,9 +1,15 @@
-const path = require("path");
-const Dotenv = require('dotenv-webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import Dotenv from 'dotenv-webpack';
+import BundleAnalyzerPlugin from 'webpack-bundle-analyzer';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-module.exports = (env, argv) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const { BundleAnalyzerPlugin: WebpackBundleAnalyzerPlugin } = BundleAnalyzerPlugin;
+
+export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   const plugins = [
@@ -12,7 +18,7 @@ module.exports = (env, argv) => {
       template: './public/index.html',
       filename: 'index.html'
     }),
-    isProduction && new BundleAnalyzerPlugin({
+    isProduction && new WebpackBundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
       reportFilename: 'bundle-report.html'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth, database } from '../App';
+import { auth, database } from '../App.js';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { Link, Navigate  } from "react-router-dom";

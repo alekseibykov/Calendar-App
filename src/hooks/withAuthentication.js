@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { auth } from '../App';
+import { auth } from '../App.js';
 import { onAuthStateChanged } from "firebase/auth";
 
 // Helper function to create a serializable user object

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import ReactModal from 'react-modal';
 import DatePicker from "react-datepicker";
 
-import { changeTaskName, changeTaskDate } from '../actions/actions';
+import { changeTaskName, changeTaskDate } from '../actions/actions.js';
 
 class ModalEdit extends Component {
   constructor(props) {

@@ -2,12 +2,12 @@ import React, { Component} from "react";
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { auth } from '../App';
+import { auth } from '../App.js';
 import { signOut } from "firebase/auth";
 
-import { addTask, removeTask, fetchToDos } from '../actions/actions';
-import EventList from './EventList';
-import Footer from './Footer';
+import { addTask, removeTask, fetchToDos } from '../actions/actions.js';
+import EventList from './EventList.js';
+import Footer from './Footer.js';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";

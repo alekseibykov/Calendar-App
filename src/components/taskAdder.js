@@ -2,7 +2,7 @@ import React, { Component} from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addTask, removeTask } from '../actions/actions';
+import { addTask, removeTask } from '../actions/actions.js';
 
 class TaskAdder extends Component {
   constructor(props) {

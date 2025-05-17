@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
 
-import { addTask, removeTask } from '../actions/actions';
+import { addTask, removeTask } from '../actions/actions.js';
 
 class Footer extends Component {
 

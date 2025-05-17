@@ -1,8 +1,8 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
-import { getISODateString } from '../reducers/datesReducer';
-import TaskAdder from './TaskAdder';
-import ModalEdit from './ModalEdit';
+import { getISODateString } from '../reducers/datesReducer.js';
+import TaskAdder from './TaskAdder.js';
+import ModalEdit from './ModalEdit.js';
 
 class EventList extends Component {
   constructor(props) {

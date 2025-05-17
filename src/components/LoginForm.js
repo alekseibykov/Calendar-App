@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth } from '../App';
+import { auth } from '../App.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
 
