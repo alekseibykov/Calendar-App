@@ -1,15 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware  } from 'redux';
-import reduxThunk from 'redux-thunk';
+import {thunk} from 'redux-thunk';
 
 import App from "./App.js";
 import mainReducer from './reducers';
 
-const store = createStore(mainReducer, {}, applyMiddleware(reduxThunk));
+const store = createStore(mainReducer, {}, applyMiddleware(thunk));
 
-const Root = () => {
+const RootComponent = () => {
   return (
     <Provider store={store}>
       <App />
@@ -17,4 +17,10 @@ const Root = () => {
   );
 }
 
-ReactDOM.render(<Root />, document.getElementById("root"));
+const container = document.getElementById('root');
+if (container) {
+  const root = createRoot(container);
+  root.render(<RootComponent />);
+} else {
+  console.error("Failed to find the root element for React mounting.");
+}
