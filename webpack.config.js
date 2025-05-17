@@ -1,6 +1,6 @@
 const path = require("path");
-const webpack = require("webpack");
 const Dotenv = require('dotenv-webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: ['./src/index.js'],
@@ -32,6 +32,11 @@ module.exports = {
     historyApiFallback: true,
   },
   plugins: [
-    new Dotenv()
+    new Dotenv(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static', // Generates a static HTML file in dist/
+      openAnalyzer: false, // Set to true to open it automatically
+      reportFilename: 'bundle-report.html' // Name of the report file
+    })
   ]
 };
