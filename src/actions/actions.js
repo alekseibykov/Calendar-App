@@ -1,5 +1,5 @@
-import { database } from '../App'; // Adjusted path to App.js
-import { ref, onValue, push, remove, update, child } from "firebase/database"; // Keep specific database functions
+import { database } from '../App';
+import { ref, onValue, push, remove, update } from "firebase/database";
 
 // Prototype extentions here
 Date.prototype.addDays = function(days) {
@@ -7,8 +7,6 @@ Date.prototype.addDays = function(days) {
   date.setDate(date.getDate() + days);
   return date;
 }
-
-// Firebase config and initialization removed from here
 
 // Manually add item to database on refresh
 // let testDate = new Date().toString();
@@ -31,7 +29,6 @@ export const addTask = (taskObject) => async dispatch => {
       type: 'ADD_TASK'
     });
   }).catch(error => {
-    // Handle error if needed
     console.error("Error adding task: ", error);
   });
 };
@@ -43,31 +40,28 @@ export const removeTask = (key, uid) => async dispatch => {
       type: 'REMOVE_TASK'
     });
   }).catch(error => {
-    // Handle error if needed
     console.error("Error removing task: ", error);
   });
 };
 
 export const changeTaskName = (currentTaskObject) => async dispatch => {
-  const taskRef = ref(database, 'users/' + currentTaskObject.uid + '/tasks/' + currentTaskObject.key); // Assuming uid is part of currentTaskObject
+  const taskRef = ref(database, 'users/' + currentTaskObject.uid + '/tasks/' + currentTaskObject.key);
   update(taskRef, { name: currentTaskObject.name }).then(() => {
     dispatch({
       type: 'CHANGE_TASK_NAME'
     });
   }).catch(error => {
-    // Handle error if needed
     console.error("Error changing task name: ", error);
   });
 };
 
 export const changeTaskDate = (currentTaskObject) => async dispatch => {
-  const taskRef = ref(database, 'users/' + currentTaskObject.uid + '/tasks/' + currentTaskObject.key); // Assuming uid is part of currentTaskObject
+  const taskRef = ref(database, 'users/' + currentTaskObject.uid + '/tasks/' + currentTaskObject.key);
   update(taskRef, { eventDate: currentTaskObject.date.toString() }).then(() => {
     dispatch({
       type: 'CHANGE_TASK_DATE'
     });
   }).catch(error => {
-    // Handle error if needed
     console.error("Error changing task date: ", error);
   });
 };

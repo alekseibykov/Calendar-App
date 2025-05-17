@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { auth, database } from '../App'; // Adjusted path
+import { auth, database } from '../App';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { Link, Navigate  } from "react-router-dom";
 import { connect } from 'react-redux';
 
-// Firebase config and initialization removed
 
 class RegistrationScreen extends Component {
   constructor(props) {

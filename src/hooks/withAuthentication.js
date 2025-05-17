@@ -1,35 +1,46 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { compose } from 'redux'; // compose seems unused
-import { auth } from '../../App'; // Adjusted path
+import { auth } from '../App';
 import { onAuthStateChanged } from "firebase/auth";
 
-// Firebase config and initialization removed
+// Helper function to create a serializable user object
+const createSerializableAuthUser = (firebaseUser) => {
+  if (!firebaseUser) return null;
+  return {
+    uid: firebaseUser.uid,
+    email: firebaseUser.email,
+    displayName: firebaseUser.displayName,
+    emailVerified: firebaseUser.emailVerified,
+    // Add any other primitive properties you need
+  };
+};
 
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
     constructor(props) {
       super(props);
-      const storedAuthUser = localStorage.getItem('authUser');
-      if (storedAuthUser) {
+      const storedAuthUserString = localStorage.getItem('authUser');
+      if (storedAuthUserString) {
         try {
-          this.props.onSetAuthUser(JSON.parse(storedAuthUser));
+          // The stored object is already serializable
+          this.props.onSetAuthUser(JSON.parse(storedAuthUserString));
         } catch (error) {
           console.error("Error parsing authUser from localStorage:", error);
           localStorage.removeItem('authUser');
           this.props.onSetAuthUser(null);
         }
       } else {
-        this.props.onSetAuthUser(null);
+        this.props.onSetAuthUser(null); // Dispatch null if nothing is stored
       }
     }
 
     componentDidMount() {
       this.listener = onAuthStateChanged(auth,
-        authUser => {
-          if (authUser) {
-            localStorage.setItem('authUser', JSON.stringify(authUser));
-            this.props.onSetAuthUser(authUser);
+        firebaseUser => {
+          const serializableUser = createSerializableAuthUser(firebaseUser);
+          if (serializableUser) {
+            localStorage.setItem('authUser', JSON.stringify(serializableUser));
+            this.props.onSetAuthUser(serializableUser);
           } else {
             localStorage.removeItem('authUser');
             this.props.onSetAuthUser(null);

@@ -1,13 +1,14 @@
 import React from "react";
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware  } from 'redux';
-import {thunk} from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 
 import App from "./App.js";
 import mainReducer from './reducers';
 
-const store = createStore(mainReducer, {}, applyMiddleware(thunk));
+const store = configureStore({
+  reducer: mainReducer,
+});
 
 const RootComponent = () => {
   return (

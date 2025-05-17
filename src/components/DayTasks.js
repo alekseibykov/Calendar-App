@@ -1,7 +1,6 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { addTask, removeTask } from '../actions/actions';
 import TaskAdder from './TaskAdder';

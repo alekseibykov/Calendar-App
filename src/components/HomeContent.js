@@ -2,7 +2,7 @@ import React, { Component} from "react";
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { auth } from '../App'; // Adjusted path
+import { auth } from '../App';
 import { signOut } from "firebase/auth";
 
 import { addTask, removeTask, fetchToDos } from '../actions/actions';
@@ -11,8 +11,6 @@ import Footer from './Footer';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
-
-// Firebase config and initialization removed
 
 class HomeContent extends Component {
   constructor(props) {

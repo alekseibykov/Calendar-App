@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 import { addTask, removeTask, fetchToDos } from './actions/actions';
-import withAuthentication  from './components/Session/withAuthentication';
+import withAuthentication  from './hooks/withAuthentication';
 
 // Lazy load route components
 const HomeScreen = lazy(() => import('./components/HomeScreen'));
@@ -29,9 +29,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);
-// --- End Firebase Initialization ---
 
-// A simple loading fallback component
 const LoadingFallback = () => <p>Loading page...</p>;
 
 class App extends Component {
@@ -40,7 +38,6 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.props); // Consider removing for production
     return (
       <Router>
         <Suspense fallback={<LoadingFallback />}>

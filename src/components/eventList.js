@@ -1,6 +1,6 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
-
+import { getISODateString } from '../reducers/datesReducer';
 import TaskAdder from './TaskAdder';
 import ModalEdit from './ModalEdit';
 
@@ -45,8 +45,8 @@ class EventList extends Component {
     let uid = this.props.sessionState.authUser.uid;
 
     let todayList = data.map((el, index) => {
-      let date = new Date(el.data.eventDate);
-      if (date >= today && date <= tomorrow) {
+      let date = getISODateString(new Date(el.data.eventDate));
+      if (date >= today && date < tomorrow) {
         return (
           <li className="task_item" key={el.key}>
             <span onClick={() => this.handleOpenModal(el.key)}>
@@ -60,8 +60,8 @@ class EventList extends Component {
     });
 
     let tomorrowList = data.map((el, index) => {
-      let date = new Date(el.data.eventDate);
-      if (date >= tomorrow && date <= upcoming) {
+      let date = getISODateString(new Date(el.data.eventDate));
+      if (date >= tomorrow && date < upcoming) {
         return (
           <li className="task_item" key={el.key}>
             <span onClick={() => this.handleOpenModal(el.key)}>
@@ -76,7 +76,7 @@ class EventList extends Component {
 
     // TODO upcoming should be no date insted of today + 2
     let upcomingList = data.map((el, index) => {
-      let date = new Date(el.data.eventDate);
+      let date = getISODateString(new Date(el.data.eventDate));
       if (date >= upcoming) {
         return (
           <li className="task_item" key={el.key}>
