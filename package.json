@@ -19,6 +19,7 @@
     "babel-polyfill": "^6.26.0",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
     "webpack": "^5.99.8",
     "webpack-bundle-analyzer": "^4.10.2",
@@ -27,7 +28,7 @@
   },
   "dependencies": {
     "dotenv-webpack": "^8.1.0",
-    "firebase": "^10.14.1",
+    "firebase": "^11.7.3",
     "react": "^19.1.0",
     "react-datepicker": "^8.3.0",
     "react-dom": "^19.1.0",
