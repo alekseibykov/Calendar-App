@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --mode development",
+    "start": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,8 +17,8 @@
     "@babel/preset-react": "^7.27.1",
     "babel-loader": "^10.0.0",
     "babel-polyfill": "^6.26.0",
-    "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.0",
     "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
     "webpack": "^5.99.8",
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.6",
-    "dotenv-webpack": "^8.1.0",
     "firebase": "^11.7.3",
     "react": "^19.1.0",
     "react-datepicker": "^8.3.0",
@@ -36,7 +35,6 @@
     "react-modal": "^3.16.3",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.0",
-    "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux": "^5.0.1"
   }
 }

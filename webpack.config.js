@@ -14,7 +14,7 @@ module.exports = (env, argv) => {
     }),
     isProduction && new BundleAnalyzerPlugin({
       analyzerMode: 'static',
-      openAnalyzer: true,
+      openAnalyzer: false,
       reportFilename: 'bundle-report.html'
     })
   ].filter(Boolean);
