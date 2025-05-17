@@ -3,7 +3,7 @@ const Dotenv = require('dotenv-webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-  entry: ['./src/index.js'],
+  entry: { main: './src/index.js' },
   mode: "development",
   module: {
     rules: [
@@ -22,7 +22,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/dist/",
-    filename: "bundle.js"
+    filename: "[name].[contenthash].js",
+    chunkFilename: "[name].[contenthash].chunk.js",
+    clean: true,
   },
   devServer: {
     static: {
@@ -34,9 +36,26 @@ module.exports = {
   plugins: [
     new Dotenv(),
     new BundleAnalyzerPlugin({
-      analyzerMode: 'static', // Generates a static HTML file in dist/
-      openAnalyzer: false, // Set to true to open it automatically
-      reportFilename: 'bundle-report.html' // Name of the report file
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      reportFilename: 'bundle-report.html'
     })
-  ]
+  ].filter(Boolean),
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\/]node_modules[\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
+  performance: {
+    hints: 'warning',
+    maxAssetSize: 512000,
+    maxEntrypointSize: 512000,
+  },
 };

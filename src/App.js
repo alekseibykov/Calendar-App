@@ -1,18 +1,19 @@
-import React, { Component} from "react";
+import React, { Component, Suspense, lazy } from "react";
 import { bindActionCreators, compose  } from 'redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
-import HomeContent from './components/HomeContent';
-import CalendarScreen from './components/CalendarScreen';
 import { addTask, removeTask, fetchToDos } from './actions/actions';
-import HomeScreen from './components/HomeScreen';
-import RegistrationScreen from './components/RegistrationScreen';
 import withAuthentication  from './components/Session/withAuthentication';
+
+// Lazy load route components
+const HomeScreen = lazy(() => import('./components/HomeScreen'));
+const RegistrationScreen = lazy(() => import('./components/RegistrationScreen'));
+const CalendarScreen = lazy(() => import('./components/CalendarScreen'));
 
 // --- Firebase Initialization ---
 const firebaseConfig = {
@@ -30,19 +31,25 @@ export const auth = getAuth(app);
 export const database = getDatabase(app);
 // --- End Firebase Initialization ---
 
+// A simple loading fallback component
+const LoadingFallback = () => <p>Loading page...</p>;
+
 class App extends Component {
   constructor() {
     super();
-
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props); // Consider removing for production
     return (
       <Router>
-        <Route exact path="/" component={HomeScreen} />
-        <Route exact path="/registration/" component={RegistrationScreen} />
-        <Route path="/calendar/" component={CalendarScreen} />
+        <Suspense fallback={<LoadingFallback />}>
+          {/* For React Router v5, keep using <Route> as is within Suspense */}
+          {/* If you were on v6+, you would use <Routes> here */}
+          <Route exact path="/" component={HomeScreen} />
+          <Route exact path="/registration/" component={RegistrationScreen} />
+          <Route path="/calendar/" component={CalendarScreen} />
+        </Suspense>
       </Router>
     );
   }
