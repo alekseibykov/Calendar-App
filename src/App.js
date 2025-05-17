@@ -44,11 +44,11 @@ class App extends Component {
     return (
       <Router>
         <Suspense fallback={<LoadingFallback />}>
-          {/* For React Router v5, keep using <Route> as is within Suspense */}
-          {/* If you were on v6+, you would use <Routes> here */}
-          <Route exact path="/" component={HomeScreen} />
-          <Route exact path="/registration/" component={RegistrationScreen} />
-          <Route path="/calendar/" component={CalendarScreen} />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/registration/" element={<RegistrationScreen />} />
+            <Route path="/calendar/*" element={<CalendarScreen />} />
+          </Routes>
         </Suspense>
       </Router>
     );

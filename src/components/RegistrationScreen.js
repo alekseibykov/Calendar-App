@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { auth, database } from '../App'; // Adjusted path
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { Link, Redirect  } from "react-router-dom";
+import { Link, Navigate  } from "react-router-dom";
 import { connect } from 'react-redux';
 
 // Firebase config and initialization removed
@@ -19,7 +19,7 @@ class RegistrationScreen extends Component {
 
   renderRedirect() {
     if (this.props.authUser) {
-      return <Redirect to='/' />
+      return <Navigate to='/' replace />
     }
   }
 
