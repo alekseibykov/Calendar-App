@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import { tasksReducer } from './tasksReducer.js';
-import { datesReducer } from './datesReducer.js';
-import sessionReducer from './sessionReducer.js';
+import tasksReducer from './tasksSlice.js';
+import datesReducer from './datesSlice.js';
+import sessionReducer from './sessionSlice.js';
 
 export default combineReducers({
   data: tasksReducer,

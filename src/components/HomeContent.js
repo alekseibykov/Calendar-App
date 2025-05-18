@@ -1,56 +1,34 @@
-import React, { Component} from "react";
+import React, { useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { auth } from '../App.js';
 import { signOut } from "firebase/auth";
-
-import { addTask, removeTask, fetchToDos } from '../actions/actions.js';
+import { addTask, removeTask } from '../reducers/actions/tasksActions.js';
 import EventList from './EventList.js';
 import Footer from './Footer.js';
-
-import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 
-class HomeContent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      startDate: new Date(),
-      name: 'Add task here',
-    };
-  }
+const HomeContent = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [name, setName] = useState('Add task here');
 
-  componentDidMount() {
-    let uid = null;
-    if (this.props.sessionState.authUser) {
-      uid = this.props.sessionState.authUser.uid;
-    }
-    if (uid) {
-      this.props.fetchToDos(uid);
-    } else {
-      console.log("HomeContent: No authenticated user found on mount to fetch todos for.");
-    }
-  }
+  const sessionState = useSelector((state) => state.sessionState);
+  const dispatch = useDispatch();
 
-  handleChange(date) {
-    this.setState({
-      startDate: date
-    });
-  }
+  const handleDateChange = (date) => {
+    setStartDate(date);
+  };
 
-  handleInputChange(e) {
-    this.setState({
-      name: e.target.value
-    });
-  }
+  const handleInputChange = (e) => {
+    setName(e.target.value);
+  };
 
-  handleClick(e) {
-    if (!this.props.sessionState.authUser) {
+  const handleAddTaskClick = () => {
+    if (!sessionState || !sessionState.authUser) {
       console.error("Cannot add task: User not authenticated.");
       return;
     }
-    let d = this.state.startDate;
+    let d = startDate;
     let nd = new Date();
     let dateId = new Date(
       d.getFullYear(),
@@ -61,87 +39,73 @@ class HomeContent extends Component {
       nd.getSeconds(),
       nd.getMilliseconds()
     );
-    this.props.addTask({
-      name: this.state.name,
+    dispatch(addTask({
+      name: name,
       startDate: dateId,
-      uid: this.props.sessionState.authUser.uid
-    });
-    this.setState({
-      name: ''
-    });
-  }
+      uid: sessionState.authUser.uid
+    }));
+    setName(''); // Reset input field
+  };
 
-  handleClick_2(key, uid) {
-    if (!this.props.sessionState.authUser || this.props.sessionState.authUser.uid !== uid) {
-       console.error("Cannot remove task: User not authenticated or UID mismatch.");
+  // Using useCallback for handleClick_2 to stabilize the function reference if passed to children
+  const handleRemoveTaskClick = useCallback((key, uid) => {
+    if (!sessionState || !sessionState.authUser || sessionState.authUser.uid !== uid) {
+      console.error("Cannot remove task: User not authenticated or UID mismatch.");
       return;
     }
-    this.props.removeTask(key, uid);
-  }
-  
-  handleSignOut() {
+    dispatch(removeTask(key, uid));
+  }, [dispatch, sessionState]); // Added sessionState to dependency array
+
+  const handleSignOut = () => {
     signOut(auth).then(() => {
       console.log("User signed out successfully.");
+      // Optionally, dispatch an action to clear user session state in Redux
+      // dispatch(clearSession()); 
     }).catch((error) => {
       console.error("Sign out error:", error);
     });
-  }
+  };
 
-  render() {
-    const userEmail = this.props.sessionState.authUser ? this.props.sessionState.authUser.email : 'Guest';
+  const userEmail = sessionState && sessionState.authUser ? sessionState.authUser.email : 'Guest';
 
-    return (
-      <div className="App">
-        <h1>
-          Calendar App
-          {this.props.sessionState.authUser && (
-            <button onClick={this.handleSignOut.bind(this)}>
-              Log Out
-            </button>
-          )}
-        </h1>
-        <h4>
-          Current user: {userEmail}
-        </h4>
-
-        {this.props.sessionState.authUser ? (
-          <>
-            <EventList removeTask={this.handleClick_2.bind(this)} />
-            <br/>
-            <input
-              onChange={this.handleInputChange.bind(this)}
-              value={this.state.name}
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Add task here"
-            />
-            <DatePicker
-              selected={this.state.startDate}
-              onChange={this.handleChange.bind(this)}
-            />
-            <button onClick={this.handleClick.bind(this)} type="button">Add</button>
-          </>
-        ) : (
-          <p>Please log in to manage your tasks.</p>
+  return (
+    <div className="App">
+      <h1>
+        Calendar App
+        {sessionState && sessionState.authUser && (
+          <button onClick={handleSignOut}>
+            Log Out
+          </button>
         )}
-        <Footer />
-      </div>
-    );
-  }
-}
+      </h1>
+      <h4>
+        Current user: {userEmail}
+      </h4>
 
-const mapStateToProps = (state) => {
-  const { data, sessionState } = state
-  return { data, sessionState }
+      {sessionState && sessionState.authUser ? (
+        <>
+          <EventList removeTask={handleRemoveTaskClick} />
+          <br/>
+          <input
+            onChange={handleInputChange}
+            value={name}
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Add task here"
+          />
+          <DatePicker
+            selected={startDate}
+            onChange={handleDateChange}
+          />
+          <button onClick={handleAddTaskClick} type="button">Add</button>
+        </>
+      ) : (
+        <p>Please log in to manage your tasks.</p>
+      )}
+      <Footer />
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    addTask,
-    removeTask,
-    fetchToDos,
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeContent);
+export default HomeContent;

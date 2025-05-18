@@ -1,107 +1,95 @@
-import React, { Component} from "react";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import ReactModal from 'react-modal';
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-import { changeTaskName, changeTaskDate } from '../actions/actions.js';
+import { changeTaskName, changeTaskDate } from '../reducers/actions/tasksActions.js';
 
-class ModalEdit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      startDate: '',
-    };
-  }
+const ModalEdit = (props) => {
+  const [name, setName] = useState('');
+  const [startDate, setStartDate] = useState('');
 
-  handleInputChange(e) {
-    this.setState({
-      name: e.target.value
-    });
-  }
+  const data = useSelector(state => state.data);
+  const authUser = useSelector(state => state.sessionState.authUser);
+  const dispatch = useDispatch();
 
-  handleChangeName() {
+  const handleInputChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleChangeName = () => {
+    if (!authUser || !authUser.uid) {
+      console.error("User not authenticated, cannot change task name.");
+      return;
+    }
     let currentTaskObject = {
-      key: this.props.modalKey,
-      name: this.state.name,
+      key: props.modalKey,
+      name: name,
+      uid: authUser.uid,
     }
 
-    this.props.changeTaskName(currentTaskObject);
-    this.props.handleCloseModal();
-  }
+    dispatch(changeTaskName(currentTaskObject));
+    props.handleCloseModal();
+  };
 
-  handleInputChange_2(date) {
-    this.setState({
-      startDate: date
-    });
-  }
+  const handleInputChange_2 = (date) => {
+    setStartDate(date);
+  };
 
-  handleChangeDate() {
+  const handleChangeDate = () => {
+    if (!authUser || !authUser.uid) {
+      console.error("User not authenticated, cannot change task date.");
+      return;
+    }
     let currentTaskObject = {
-      key: this.props.modalKey,
-      date: this.state.startDate,
+      key: props.modalKey,
+      date: startDate,
+      uid: authUser.uid,
     }
 
-    this.props.changeTaskDate(currentTaskObject);
-    this.props.handleCloseModal();
-  }
+    dispatch(changeTaskDate(currentTaskObject));
+    props.handleCloseModal();
+  };
 
-  render() {
-    let data = this.props.data;
-    if (data === null) {
-      data = [];
-    }
-    let el = document.getElementById("root");
-    let date = new Date(this.state.startDate ?
-            this.state.startDate :
-            data[this.props.modalKey] ?
-            data[this.props.modalKey].eventDate
-            : '');
-    return (
-      <ReactModal
-        isOpen={this.props.showModal}
-        contentLabel="Minimal Modal Example"
-        appElement={el}
-        onRequestClose={this.props.handleCloseModal}
-      >
-        <button onClick={this.props.handleCloseModal}>Close Modal</button>
-        <br />
-        <br />
-        <input
-          onChange={this.handleInputChange.bind(this)}
-          value={this.state.name ?
-                this.state.name :
-                data[this.props.modalKey] ?
-                data[this.props.modalKey].name
-                : ''}
-          type="text"
-          id="name"
-          name="name"
-        />
-        <button onClick={this.handleChangeName.bind(this)}>Change name</button>
-        <br />
-        <br />
-        <DatePicker
-          selected={date}
-          onChange={this.handleInputChange_2.bind(this)}
-        />
-      <button onClick={this.handleChangeDate.bind(this)}>Change date</button>
-      </ReactModal>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  const { data, dates } = state
-  return { data, dates }
+  let currentData = data || [];
+  let el = document.getElementById("root");
+  let date = new Date(startDate ?
+          startDate :
+          currentData[props.modalKey] ?
+          currentData[props.modalKey].eventDate
+          : '');
+  return (
+    <ReactModal
+      isOpen={props.showModal}
+      contentLabel="Minimal Modal Example"
+      appElement={el}
+      onRequestClose={props.handleCloseModal}
+    >
+      <button onClick={props.handleCloseModal}>Close Modal</button>
+      <br />
+      <br />
+      <input
+        onChange={handleInputChange}
+        value={name ?
+              name :
+              currentData[props.modalKey] ?
+              currentData[props.modalKey].name
+              : ''}
+        type="text"
+        id="name"
+        name="name"
+      />
+      <button onClick={handleChangeName}>Change name</button>
+      <br />
+      <br />
+      <DatePicker
+        selected={date}
+        onChange={handleInputChange_2}
+      />
+    <button onClick={handleChangeDate}>Change date</button>
+    </ReactModal>
+  );
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    changeTaskName,
-    changeTaskDate,
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ModalEdit);
+export default ModalEdit;

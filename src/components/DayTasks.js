@@ -1,92 +1,79 @@
-import React, { Component} from "react";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { addTask, removeTask } from '../actions/actions.js';
+import { removeTask } from '../reducers/actions/tasksActions.js';
 import TaskAdder from './TaskAdder.js';
 import ModalEdit from './ModalEdit.js';
 
-class DayTasks extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModal: false,
-      modalKey: '',
-    };
+const DayTasks = ({ startDate }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalKey, setModalKey] = useState('');
 
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-  }
+  const rawData = useSelector(state => state.data);
+  const sessionState = useSelector(state => state.sessionState);
+  const dispatch = useDispatch();
 
-  handleRemove(key, uid) {
-    this.props.removeTask(key, uid)
-  }
+  const handleRemove = (key, uid) => {
+    dispatch(removeTask(key, uid));
+  };
 
-  handleOpenModal(key) {
-    this.setState({ showModal: true, modalKey: key });
-  }
+  const handleOpenModal = (key) => {
+    setShowModal(true);
+    setModalKey(key);
+  };
 
-  handleCloseModal() {
-    this.setState({ showModal: false });
-  }
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
-  renderTasks() {
-    let {startDate} = this.props;
-    let rawData = this.props.data;
+  const renderTasks = () => {
     let data = [];
     if (rawData !== null) {
       data = Object.keys(rawData).map(function(key) {
         return {key: key, data: rawData[key]};
-      })
+      });
     }
-    let today = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
-    let tomorrow = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()).addDays(1)
+    const validStartDate = startDate instanceof Date ? startDate : new Date(startDate);
 
-    return data.map((el, index) => {
+    let today = new Date(validStartDate.getFullYear(), validStartDate.getMonth(), validStartDate.getDate());
+    let tomorrow = new Date(validStartDate.getFullYear(), validStartDate.getMonth(), validStartDate.getDate());
+    if (typeof tomorrow.addDays === 'function') {
+        tomorrow = tomorrow.addDays(1);
+    } else {
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        console.warn("Date.prototype.addDays is not defined. Using fallback setDate.")
+    }
+
+    return data.map((el) => {
       let date = new Date(el.data.eventDate);
-      if (date >= today && date <= tomorrow) {
+      if (date >= today && date < tomorrow) {
         return (
           <li className="task_item" key={el.key}>
-            <span onClick={() => this.handleOpenModal(el.key)}>
+            <span onClick={() => handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key, this.props.sessionState.authUser.uid)} type="button">Remove</button>
+            <button onClick={() => handleRemove(el.key, sessionState.authUser.uid)} type="button">Remove</button>
           </li>
         );
       }
       return null;
     });
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <h2>
-          Tasks for this day <TaskAdder day={this.props.startDate} />
-        </h2>
-        <ModalEdit
-          handleOpenModal={this.handleOpenModal}
-          handleCloseModal={this.handleCloseModal}
-          showModal={this.state.showModal}
-          modalKey={this.state.modalKey}
-        />
-        {this.renderTasks()}
-      </div>
-    );
-
-  }
-}
-
-const mapStateToProps = (state) => {
-  const { data, dates, sessionState } = state
-  return { data, dates, sessionState }
+  return (
+    <div>
+      <h2>
+        Tasks for this day <TaskAdder day={startDate} />
+      </h2>
+      <ModalEdit
+        handleOpenModal={handleOpenModal}
+        handleCloseModal={handleCloseModal}
+        showModal={showModal}
+        modalKey={modalKey}
+      />
+      {renderTasks()}
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    addTask,
-    removeTask,
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(DayTasks);
+export default DayTasks;

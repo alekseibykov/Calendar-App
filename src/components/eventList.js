@@ -1,40 +1,30 @@
-import React, { Component} from "react";
-import { connect } from 'react-redux';
-import { getISODateString } from '../reducers/datesReducer.js';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import TaskAdder from './TaskAdder.js';
 import ModalEdit from './ModalEdit.js';
+import { removeTask } from '../reducers/actions/tasksActions.js';
 
-class EventList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModal: false,
-      modalKey: '',
-    };
+// Define getISODateString locally or import from a shared utility file
+const getISODateString = (date) => {
+  // Ensures the date is treated as local timezone then converted to ISO string for the Z-normalized date part
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString();
+};
 
-    this.handleRemove = this.handleRemove.bind(this);
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-  }
+function EventList() {
+    const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false);
+    const [modalKey, setModalKey] = useState('');
+    const handleOpenModal = (key) => {
+      setShowModal(true);
+      setModalKey(key);
+    }
+    const sessionState = useSelector((state) => state.sessionState);
+    const rawData = useSelector((state) => state.data);
+    const dates = useSelector((state) => state.dates);
+    let today = dates.today;
+    let tomorrow = dates.tomorrow;
+    let upcoming = dates.upcoming;
 
-  handleRemove(key, uid) {
-    this.props.removeTask(key, uid)
-  }
-
-  handleOpenModal(key) {
-    this.setState({ showModal: true, modalKey: key });
-  }
-
-  handleCloseModal() {
-    this.setState({ showModal: false });
-  }
-
-  render() {
-    let today = this.props.dates.today;
-    let tomorrow = this.props.dates.tomorrow;
-    let upcoming = this.props.dates.upcoming;
-
-    let rawData = this.props.data;
     let data = [];
     if (rawData !== null) {
       data = Object.keys(rawData).map(function(key) {
@@ -42,17 +32,17 @@ class EventList extends Component {
       })
     }
 
-    let uid = this.props.sessionState.authUser.uid;
+    let uid = sessionState.authUser.uid;
 
     let todayList = data.map((el, index) => {
       let date = getISODateString(new Date(el.data.eventDate));
       if (date >= today && date < tomorrow) {
         return (
           <li className="task_item" key={el.key}>
-            <span onClick={() => this.handleOpenModal(el.key)}>
+            <span onClick={() => handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key, uid)} type="button">Remove</button>
+            <button onClick={() => dispatch(removeTask(el.key, uid))} type="button">Remove</button>
           </li>
         );
       }
@@ -64,10 +54,10 @@ class EventList extends Component {
       if (date >= tomorrow && date < upcoming) {
         return (
           <li className="task_item" key={el.key}>
-            <span onClick={() => this.handleOpenModal(el.key)}>
+            <span onClick={() => handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key, uid)} type="button">Remove</button>
+            <button onClick={() => dispatch(removeTask(el.key, uid))} type="button">Remove</button>
           </li>
         );
       }
@@ -80,10 +70,10 @@ class EventList extends Component {
       if (date >= upcoming) {
         return (
           <li className="task_item" key={el.key}>
-            <span onClick={() => this.handleOpenModal(el.key)}>
+            <span onClick={() => handleOpenModal(el.key)}>
               {el.data.name + ' '}
             </span>
-            <button onClick={() => this.handleRemove(el.key, uid)} type="button">Remove</button>
+            <button onClick={() => dispatch(removeTask(el.key, uid))} type="button">Remove</button>
           </li>
         );
       }
@@ -93,10 +83,10 @@ class EventList extends Component {
     return (
       <div className="List">
         <ModalEdit
-          handleOpenModal={this.handleOpenModal}
-          handleCloseModal={this.handleCloseModal}
-          showModal={this.state.showModal}
-          modalKey={this.state.modalKey}
+          handleOpenModal={handleOpenModal}
+          handleCloseModal={() => setShowModal(false)}
+          showModal={showModal}
+          modalKey={modalKey}
         />
         Today <TaskAdder day="today" />
         <ul>
@@ -112,12 +102,7 @@ class EventList extends Component {
         </ul>
       </div>
     );
-  }
-}
+ }
 
-const mapStateToProps = (state) => {
-  const { data, dates, sessionState } = state
-  return { data, dates, sessionState }
-};
 
-export default connect(mapStateToProps)(EventList);
+export default EventList;

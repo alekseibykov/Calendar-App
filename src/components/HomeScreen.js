@@ -1,41 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "firebase/database";
 import "firebase/auth";
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import LoginForm from './LoginForm.js';
 import HomeContent from './HomeContent.js';
 
-class HomeScreen extends Component {
-  constructor(props) {
-    super();
-    this.state = { authUser: null };
-  }
+const HomeScreen = () => {
+  const authUser = useSelector(state => state.sessionState.authUser);
 
-  renderMainScreen() {
-    let {authUser} = this.props;
-    if (authUser) {
-      return (
-        <HomeContent />
-      );
-    } else {
-      return (
-        <LoginForm  />
-      );
-    }
-  }
+  return (
+    <div>
+      {authUser ? <HomeContent /> : <LoginForm />}
+    </div>
+  );
+};
 
-  render() {
-    return (
-      <div>
-        { this.renderMainScreen() }
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  authUser: state.sessionState.authUser,
-});
-
-export default connect(mapStateToProps)(HomeScreen);
+export default HomeScreen;

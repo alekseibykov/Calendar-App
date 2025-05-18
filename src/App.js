@@ -1,13 +1,12 @@
-import React, { Component, Suspense, lazy } from "react";
-import { bindActionCreators, compose  } from 'redux';
+import React, { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
-import { addTask, removeTask, fetchToDos } from './actions/actions.js';
+import { fetchToDos } from './reducers/actions/tasksActions.js';
 import withAuthentication  from './hooks/withAuthentication.js';
 
 // Lazy load route components
@@ -32,43 +31,27 @@ export const database = getDatabase(app);
 
 const LoadingFallback = () => <p>Loading page...</p>;
 
-class App extends Component {
-  constructor() {
-    super();
-  }
+const App = () => {
+  const authUser = useSelector(state => state.sessionState.authUser);
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <Router>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            <Route path="/" element={<HomeScreen />} />
-            <Route path="/registration/" element={<RegistrationScreen />} />
-            <Route path="/calendar/*" element={<CalendarScreen />} />
-          </Routes>
-        </Suspense>
-      </Router>
-    );
-  }
-}
+  useEffect(() => {
+    if (authUser && authUser.uid) {
+      dispatch(fetchToDos(authUser.uid));
+    }
+  }, [authUser]);
 
-const mapStateToProps = (state) => {
-  const { data, sessionState } = state
-  return { data, sessionState }
+  return (
+    <Router>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/registration/" element={<RegistrationScreen />} />
+          <Route path="/calendar/*" element={<CalendarScreen />} />
+        </Routes>
+      </Suspense>
+    </Router>
+  );
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    addTask,
-    removeTask,
-    fetchToDos,
-  }, dispatch)
-);
-
-export default compose(
-  withAuthentication,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(App);
+export default withAuthentication(App);

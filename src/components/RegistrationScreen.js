@@ -1,102 +1,84 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, database } from '../App.js';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { Link, Navigate  } from "react-router-dom";
-import { connect } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
+function RegistrationScreen() {
+  const [email, setEmail] = useState('Email');
+  const [password, setPassword] = useState('Password');
+  const [name, setName] = useState('Your name');
+  const authUser = useSelector(state => state.sessionState.authUser);
+  const navigate = useNavigate();
 
-class RegistrationScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: 'Email',
-      password: 'Password',
-      name: 'Your name',
-    };
-  }
-
-  renderRedirect() {
-    if (this.props.authUser) {
-      return <Navigate to='/' replace />
+  useEffect(() => {
+    if (authUser) {
+      navigate('/', { replace: true });
     }
-  }
+  }, [authUser, navigate]);
 
-  handleEmailChange(e) {
-    this.setState({
-      email: e.target.value
-    });
-  }
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-  handlePasswordChange(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
-  handleNameChange(e) {
-    this.setState({
-      name: e.target.value
-    });
-  }
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
-  onPress() {
-    const { email, password } = this.state;
+  const onPress = () => {
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user.uid);
-      return set(ref(database, 'users/' + user.uid), ({email: user.email, uid: user.uid, name: this.state.name }));
-    })
-    .then(() => {
-      console.log("User created and data saved.");
-    })
-    .catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorMessage);
-    });
-  }
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user.uid);
+        return set(ref(database, 'users/' + user.uid), ({ email: user.email, uid: user.uid, name: name }));
+      })
+      .then(() => {
+        console.log("User created and data saved.");
+      })
+      .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
 
-  render() {
-    return (
-      <div>
-        {this.renderRedirect()}
-        <input
-          onChange={this.handleNameChange.bind(this)}
-          value={this.state.name}
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Your name"
-        />
-        <input
-          onChange={this.handleEmailChange.bind(this)}
-          value={this.state.email}
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-        />
-        <input
-          onChange={this.handlePasswordChange.bind(this)}
-          value={this.state.password}
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-        />
-        <button onClick={this.onPress.bind(this)}>
-          Create account
-        </button>
-        <Link to="/">Back </Link>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <input
+        onChange={handleNameChange}
+        value={name}
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Your name"
+      />
+      <input
+        onChange={handleEmailChange}
+        value={email}
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Email"
+      />
+      <input
+        onChange={handlePasswordChange}
+        value={password}
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+      />
+      <button onClick={onPress}>
+        Create account
+      </button>
+      <Link to="/">Back </Link>
+    </div>
+  );
 }
 
-const mapStateToProps = state => ({
-  authUser: state.sessionState.authUser,
-});
-
-export default connect(mapStateToProps)(RegistrationScreen);
+export default RegistrationScreen;

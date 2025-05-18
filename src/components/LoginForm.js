@@ -1,96 +1,85 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { auth } from '../App.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
 
-class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: 'Email@gmail.com',
-      password: 'Password',
-      error: '',
-      loading: false
-    };
-  }
+const LoginForm = () => {
+  const [email, setEmail] = useState('Email@gmail.com');
+  const [password, setPassword] = useState('Password');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  async onPress() {
-    const { email, password } = this.state;
-
-    this.setState({ error: '', loading: true });
+  const onPress = async () => {
+    setError('');
+    setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      this.onLoginFail(error);
+    } catch (err) {
+      onLoginFail(err);
     }
-  }
+  };
 
-  handleEmailChange(e) {
-    this.setState({
-      email: e.target.value
-    });
-  }
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-  handlePasswordChange(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
-  onLoginFail(error) {
+  const onLoginFail = (err) => {
     let errorMessage = 'Authentication Failed';
-    if (error && error.message) {
-      errorMessage = error.message;
+    if (err && err.message) {
+      errorMessage = err.message;
     }
-    this.setState({ error: errorMessage, loading: false });
-  }
+    setError(errorMessage);
+    setLoading(false);
+  };
 
-  renderButton() {
-    if (this.state.loading) {
+  const renderButton = () => {
+    if (loading) {
       return <div>Loading...</div>;
     }
 
     return (
-      <button onClick={this.onPress.bind(this)} >
+      <button onClick={onPress} >
         Log In
       </button>
     );
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <input
-          onChange={this.handleEmailChange.bind(this)}
-          value={this.state.email}
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-        />
-        <br/>
-        <br/>
-        <input
-          onChange={this.handlePasswordChange.bind(this)}
-          value={this.state.password}
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-        />
-        <br/>
-        <br/>
-        <div style={styles.errorTextStyle}>
-          {this.state.error}
-        </div>
-
-        { this.renderButton() }
-
-        <Link to="/registration/">Registration </Link>
+  return (
+    <div>
+      <input
+        onChange={handleEmailChange}
+        value={email}
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Email"
+      />
+      <br/>
+      <br/>
+      <input
+        onChange={handlePasswordChange}
+        value={password}
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+      />
+      <br/>
+      <br/>
+      <div style={styles.errorTextStyle}>
+        {error}
       </div>
-    );
-  }
-}
+
+      {renderButton()}
+
+      <Link to="/registration/">Registration </Link>
+    </div>
+  );
+};
 
 const styles = {
   errorTextStyle: {

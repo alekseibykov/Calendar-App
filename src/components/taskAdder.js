@@ -1,100 +1,80 @@
-import React, { Component} from "react";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { addTask, removeTask } from '../actions/actions.js';
+import { addTask } from '../reducers/actions/tasksActions.js';
 
-class TaskAdder extends Component {
-  constructor(props) {
-    super(props);
+const TaskAdder = (props) => {
+  const [showAddToday, setShowAddToday] = useState(false);
+  const [nameAddToday, setNameAddToday] = useState('');
 
-    this.state = {
-      showAddToday: false,
-      nameAddToday: '',
-    };
-  }
+  const data = useSelector(state => state.data);
+  const sessionState = useSelector(state => state.sessionState);
 
-  handleClick(e) {
+  const dispatch = useDispatch();
+
+  const handleClick = (e) => {
     e.preventDefault();
-    this.setState({
-      showAddToday: true,
-    });
-  }
+    setShowAddToday(true);
+  };
 
-  handleClick_2(e) {
+  const handleClick_2 = (e) => {
     e.preventDefault();
-    this.setState({
-      showAddToday: false,
-    });
-  }
+    setShowAddToday(false);
+  };
 
-  handleClick_3(e) {
-    this.setState({
-      nameAddToday: e.target.value
-    });
-  }
+  const handleClick_3 = (e) => {
+    setNameAddToday(e.target.value);
+  };
 
-  handleClick_4() {
+  const handleClick_4 = (day) => {
     let eventDate;
-    if (this.props.day instanceof Date) {
-      eventDate = this.props.day;
+    if (day instanceof Date) {
+      eventDate = day;
     }
-    if (this.props.day === 'today') {
+    if (day === 'today') {
       eventDate = new Date();
     }
-    if (this.props.day === 'tomorrow') {
-      eventDate = new Date().addDays(1);
+    if (day === 'tomorrow') {
+      const tempDate = new Date();
+      tempDate.setDate(tempDate.getDate() + 1);
+      eventDate = tempDate;
     }
-    if (this.props.day === 'upcoming') {
-      eventDate = new Date().addDays(2);
+    if (day === 'upcoming') {
+      const tempDate = new Date();
+      tempDate.setDate(tempDate.getDate() + 2);
+      eventDate = tempDate;
     }
-    this.props.addTask({name: this.state.nameAddToday, startDate: eventDate, uid: this.props.sessionState.authUser.uid});
-    this.setState({
-      showAddToday: false,
-      nameAddToday: '',
-    });
-  }
+    dispatch(addTask({name: nameAddToday, startDate: eventDate, uid: sessionState.authUser.uid}));
+    setShowAddToday(false);
+    setNameAddToday('');
+  };
 
-  render() {
-    let renderAddTodayTask;
-    if (this.state.showAddToday) {
-      renderAddTodayTask = (
-        <span>
-          <input
-            onChange={this.handleClick_3.bind(this)}
-            value={this.state.nameAddToday}
-            type="text"
-            id="nameAddToday"
-            name="nameAddToday"
-          />
-          <button onClick={this.handleClick_4.bind(this)} type="button">Add</button>
-          <button onClick={this.handleClick_2.bind(this)} type="button">Cancel</button>
-        </span>
-      );
-    } else {
-      renderAddTodayTask = (
-        <button onClick={this.handleClick.bind(this)} type="button">Add</button>
-      );
-    }
-
-    return (
+  let renderAddTodayTask;
+  if (showAddToday) {
+    renderAddTodayTask = (
       <span>
-        {renderAddTodayTask}
+        <input
+          onChange={handleClick_3}
+          value={nameAddToday}
+          type="text"
+          id="nameAddToday"
+          name="nameAddToday"
+        />
+        <button onClick={() => handleClick_4(props.day)} type="button">Add</button>
+        <button onClick={handleClick_2} type="button">Cancel</button>
       </span>
     );
+  } else {
+    renderAddTodayTask = (
+      <button onClick={handleClick} type="button">Add</button>
+    );
   }
-}
 
-const mapStateToProps = (state) => {
-  const { data, sessionState } = state
-  return { data, sessionState }
+  return (
+    <span>
+      {renderAddTodayTask}
+    </span>
+  );
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    addTask,
-    removeTask,
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(TaskAdder);
+export default TaskAdder;

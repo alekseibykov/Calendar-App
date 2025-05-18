@@ -1,77 +1,52 @@
-import React, { Component} from "react";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useState } from "react";
+import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../App.css";
 
-import { addTask, removeTask, fetchToDos } from '../actions/actions.js';
 import DayTasks from './DayTasks.js';
 
-class CalendarScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      startDate: new Date(),
-    };
+const CalendarScreen = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const rawData = useSelector(state => state.data);
+
+  const handleChange = (date) => {
+    setStartDate(date);
+  };
+
+  let data = [];
+  if (rawData === null) {
+    return <p>Loading page...</p>;
   }
+  data = Object.keys(rawData).map(function(key) {
+    return {key: key, data: rawData[key]};
+  })
 
-  handleChange(date) {
-    this.setState({
-      startDate: date
-    });
-  }
+  const highlightedDates = data.map(el => new Date(el.data.eventDate));
 
-  render() {
-    let rawData = this.props.data;
-    let data = [];
-    if (rawData !== null) {
-      data = Object.keys(rawData).map(function(key) {
-        return {key: key, data: rawData[key]};
-      })
-    }
-
-    let highlightedDates = [];
-    data.map((el, index) => {
-      let date = new Date(el.data.eventDate);
-      highlightedDates.push(date)
-    });
-
-    this.highlightWithRanges = [
-      { "react-datepicker__day--highlighted-custom-1": highlightedDates },
-    ];
-    return (
-      <div>
-        <h1> Calendar Screen </h1>
-        <DatePicker
-          inline
-          selected={this.state.startDate}
-          onChange={this.handleChange.bind(this)}
-          highlightDates={this.highlightWithRanges}
-        />
-        <DayTasks startDate={this.state.startDate} />
-        <br/>
-        <br/>
-        <nav>
-          <Link to="/">Main </Link>
-          <br />
-          <Link to="/calendar/">Calendar </Link>
-        </nav>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  const { data } = state
-  return { data }
+  const highlightWithRanges = [
+    { "react-datepicker__day--highlighted-custom-1": highlightedDates },
+  ];
+  return (
+    <div>
+      <h1> Calendar Screen </h1>
+      <DatePicker
+        inline
+        selected={startDate}
+        onChange={handleChange}
+        highlightDates={highlightWithRanges}
+      />
+      <DayTasks startDate={startDate} />
+      <br/>
+      <br/>
+      <nav>
+        <Link to="/">Main </Link>
+        <br />
+        <Link to="/calendar/">Calendar </Link>
+      </nav>
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    addTask,
-    removeTask,
-    fetchToDos,
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen);
+export default CalendarScreen;
