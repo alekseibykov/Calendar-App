@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { auth, database } from '../App.js';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, database } from '../App';
+import { createUserWithEmailAndPassword, AuthError } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
+// Define RootState, should match your store's state structure
+interface AuthUser {
+  uid: string;
+  // include other properties of authUser if accessed
+}
+
+interface SessionState {
+  authUser: AuthUser | null;
+  // other session properties
+}
+
+interface RootState {
+  sessionState: SessionState; // Or SessionState | null if sessionState itself can be null
+  // other top-level state slices
+}
+
 function RegistrationScreen() {
-  const [email, setEmail] = useState('Email');
-  const [password, setPassword] = useState('Password');
-  const [name, setName] = useState('Your name');
-  const authUser = useSelector(state => state.sessionState.authUser);
+  const [email, setEmail] = useState<string>('Email');
+  const [password, setPassword] = useState<string>('Password');
+  const [name, setName] = useState<string>('Your name');
+  const authUser = useSelector((state: RootState) => state.sessionState.authUser);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,15 +34,15 @@ function RegistrationScreen() {
     }
   }, [authUser, navigate]);
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
@@ -40,10 +56,9 @@ function RegistrationScreen() {
       .then(() => {
         console.log("User created and data saved.");
       })
-      .catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorMessage);
+      .catch((error: AuthError) => {
+        const errorMessage = error.message;
+        console.error("Registration Error:", errorMessage);
       });
   };
 
@@ -73,7 +88,7 @@ function RegistrationScreen() {
         name="password"
         placeholder="Password"
       />
-      <button onClick={onPress}>
+      <button onClick={onPress} type="button">
         Create account
       </button>
       <Link to="/">Back </Link>

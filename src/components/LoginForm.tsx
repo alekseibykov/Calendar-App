@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { auth } from '../App.js';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../App';
+import { signInWithEmailAndPassword, AuthError } from "firebase/auth";
 import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState('Email@gmail.com');
   const [password, setPassword] = useState('Password');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   const onPress = async () => {
@@ -15,19 +15,19 @@ const LoginForm = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      onLoginFail(err);
+      onLoginFail(err as AuthError);
     }
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
-  const onLoginFail = (err) => {
+  const onLoginFail = (err: AuthError) => {
     let errorMessage = 'Authentication Failed';
     if (err && err.message) {
       errorMessage = err.message;
@@ -42,7 +42,7 @@ const LoginForm = () => {
     }
 
     return (
-      <button onClick={onPress} >
+      <button onClick={onPress} type="button">
         Log In
       </button>
     );
@@ -84,7 +84,7 @@ const LoginForm = () => {
 const styles = {
   errorTextStyle: {
     fontSize: 20,
-    alignSelf: 'center',
+    textAlign: 'center' as 'center',
     color: 'red'
   }
 };

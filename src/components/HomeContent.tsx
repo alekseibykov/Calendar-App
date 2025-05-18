@@ -1,25 +1,30 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { useSelector, useDispatch } from 'react-redux';
-import { auth } from '../App.js';
+
+import { auth } from '../App';
 import { signOut } from "firebase/auth";
-import { addTask, removeTask } from '../reducers/actions/tasksActions.js';
-import EventList from './EventList.js';
-import Footer from './Footer.js';
+import { addTask } from '../reducers/actions/tasksActions';
+import EventList from './EventList';
+import Footer from './Footer';
 import "../App.css";
+import {AppDispatch, RootState} from "../index.tsx";
+
 
 const HomeContent = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [name, setName] = useState('Add task here');
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [name, setName] = useState<string>('Add task here');
 
-  const sessionState = useSelector((state) => state.sessionState);
-  const dispatch = useDispatch();
+  const sessionState = useSelector((state: RootState) => state.sessionState);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleDateChange = (date) => {
-    setStartDate(date);
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setStartDate(date);
+    }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
@@ -47,15 +52,6 @@ const HomeContent = () => {
     setName(''); // Reset input field
   };
 
-  // Using useCallback for handleClick_2 to stabilize the function reference if passed to children
-  const handleRemoveTaskClick = useCallback((key, uid) => {
-    if (!sessionState || !sessionState.authUser || sessionState.authUser.uid !== uid) {
-      console.error("Cannot remove task: User not authenticated or UID mismatch.");
-      return;
-    }
-    dispatch(removeTask(key, uid));
-  }, [dispatch, sessionState]); // Added sessionState to dependency array
-
   const handleSignOut = () => {
     signOut(auth).then(() => {
       console.log("User signed out successfully.");
@@ -66,13 +62,13 @@ const HomeContent = () => {
     });
   };
 
-  const userEmail = sessionState && sessionState.authUser ? sessionState.authUser.email : 'Guest';
+  const userEmail = sessionState?.authUser?.email ?? 'Guest';
 
   return (
     <div className="App">
       <h1>
         Calendar App
-        {sessionState && sessionState.authUser && (
+        {sessionState?.authUser && (
           <button onClick={handleSignOut}>
             Log Out
           </button>
@@ -82,9 +78,9 @@ const HomeContent = () => {
         Current user: {userEmail}
       </h4>
 
-      {sessionState && sessionState.authUser ? (
+      {sessionState?.authUser ? (
         <>
-          <EventList removeTask={handleRemoveTaskClick} />
+          <EventList />
           <br/>
           <input
             onChange={handleInputChange}

@@ -26,13 +26,13 @@ export default (env, argv) => {
   ].filter(Boolean);
 
   return {
-    entry: { main: './src/index.js' },
+    entry: { main: './src/index.tsx' },
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           exclude: /(node_modules|bower_components)/,
-          loader: "babel-loader",
+          loader: "babel-loader"
         },
         {
           test: /\.css$/,
@@ -40,7 +40,7 @@ export default (env, argv) => {
         }
       ]
     },
-    resolve: { extensions: ["*", ".js", ".jsx"] },
+    resolve: { extensions: ["*", ".js", ".jsx", ".ts", ".tsx"] },
     output: {
       path: path.resolve(__dirname, "dist/"),
       publicPath: "/",
@@ -59,7 +59,7 @@ export default (env, argv) => {
         chunks: 'all',
         cacheGroups: {
           vendor: {
-            test: /[\/]node_modules[\/]/,
+            test: /\/node_modules\//,
             name: 'vendors',
             chunks: 'all',
           },

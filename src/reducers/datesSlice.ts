@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const getISODateString = (date) => {
+const getISODateString = (date: Date): string => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString();
 };
 
-const getFutureISODateString = (baseDate, daysToAdd) => {
+const getFutureISODateString = (baseDate: Date, daysToAdd: number): string => {
   const newDate = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
   newDate.setDate(newDate.getDate() + daysToAdd);
   return newDate.toISOString();
@@ -12,10 +12,18 @@ const getFutureISODateString = (baseDate, daysToAdd) => {
 
 const today = new Date();
 
-const initialState = {
+// Define the type for the state managed by this slice
+export interface DatesState {
+  today: string;
+  tomorrow: string;
+  upcoming: string;
+  // specificDate?: string; // Example if you add more date states
+}
+
+const initialState: DatesState = {
   today: getISODateString(today),
   tomorrow: getFutureISODateString(today, 1),
-  upcoming: getFutureISODateString(today, 2),
+  upcoming: getFutureISODateString(today, 2), // Consider what 'upcoming' truly means, e.g. a range or a specific logic
 };
 
 const datesSlice = createSlice({
@@ -23,7 +31,7 @@ const datesSlice = createSlice({
   initialState,
   reducers: {
     // No specific actions defined for dates yet, but can be added here
-    // e.g., setSpecificDate: (state, action) => { state.specificDate = action.payload; }
+    // e.g., setSpecificDate: (state, action: PayloadAction<string>) => { state.specificDate = action.payload; }
   },
 });
 

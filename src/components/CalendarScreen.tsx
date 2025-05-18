@@ -4,23 +4,27 @@ import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
+import { RootState } from '../index';
 
-import DayTasks from './DayTasks.js';
+import DayTasks from './DayTasks';
+import { Task } from '../reducers/tasksSlice';
 
 const CalendarScreen = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const rawData = useSelector(state => state.data);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const rawData = useSelector((state: RootState) => state.data);
 
-  const handleChange = (date) => {
-    setStartDate(date);
+  const handleChange = (date: Date | null) => {
+    if (date) {
+      setStartDate(date);
+    }
   };
 
-  let data = [];
+  let data: { key: string; data: Task }[] = [];
   if (rawData === null) {
     return <p>Loading page...</p>;
   }
-  data = Object.keys(rawData).map(function(key) {
-    return {key: key, data: rawData[key]};
+  data = Object.keys(rawData).map((key: string) => {
+    return {key: key, data: rawData[key] };
   })
 
   const highlightedDates = data.map(el => new Date(el.data.eventDate));

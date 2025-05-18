@@ -3,12 +3,17 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import App from "./App.js";
-import mainReducer from './reducers/index.js';
+import App from "./App.tsx";
+import mainReducer from './reducers/index.ts';
 
 const store = configureStore({
   reducer: mainReducer,
 });
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {data: TasksState, dates: DatesState, sessionState: SessionState}
+export type AppDispatch = typeof store.dispatch;
 
 const RootComponent = () => {
   return (

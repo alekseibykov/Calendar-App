@@ -1,18 +1,19 @@
 import React, { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, TypedUseSelectorHook } from 'react-redux';
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
-import { fetchToDos } from './reducers/actions/tasksActions.js';
-import withAuthentication  from './hooks/withAuthentication.js';
+import { fetchToDos } from './reducers/actions/tasksActions.ts';
+import withAuthentication  from './hooks/withAuthentication.tsx';
+import type { RootState, AppDispatch } from './index.tsx';
 
 // Lazy load route components
-const HomeScreen = lazy(() => import('./components/HomeScreen.js'));
-const RegistrationScreen = lazy(() => import('./components/RegistrationScreen.js'));
-const CalendarScreen = lazy(() => import('./components/CalendarScreen.js'));
+const HomeScreen = lazy(() => import('./components/HomeScreen.tsx'));
+const RegistrationScreen = lazy(() => import('./components/RegistrationScreen.tsx'));
+const CalendarScreen = lazy(() => import('./components/CalendarScreen.tsx'));
 
 // --- Firebase Initialization ---
 const firebaseConfig = {
@@ -31,15 +32,18 @@ export const database = getDatabase(app);
 
 const LoadingFallback = () => <p>Loading page...</p>;
 
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
 const App = () => {
-  const authUser = useSelector(state => state.sessionState.authUser);
-  const dispatch = useDispatch();
+  const authUser = useAppSelector(state => state.sessionState.authUser);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (authUser && authUser.uid) {
       dispatch(fetchToDos(authUser.uid));
     }
-  }, [authUser]);
+  }, [authUser, dispatch]);
 
   return (
     <Router>
