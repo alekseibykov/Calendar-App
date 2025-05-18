@@ -1,29 +1,19 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '../index';
+import { AppDispatch, RootState } from '../index';
 
 import { addTask } from '../reducers/actions/tasksActions';
-import { TasksState } from '../reducers/tasksSlice';
 
+// Re-introduce TaskAdderProps interface
 interface TaskAdderProps {
   day: Date | 'today' | 'tomorrow' | 'upcoming';
 }
 
-interface AuthUser {
-  uid: string;
-}
-interface SessionState {
-  authUser: AuthUser | null;
-}
-interface RootState {
-  data: TasksState | null;
-  sessionState: SessionState | null;
-}
-
-const TaskAdder = (props: TaskAdderProps) => {
+const TaskAdder = (props: TaskAdderProps) => { // Use TaskAdderProps
   const [showAddToday, setShowAddToday] = useState(false);
   const [nameAddToday, setNameAddToday] = useState<string>('');
-  useSelector((state: RootState) => state.data);
+  
+  const data = useSelector((state: RootState) => state.data);
   const sessionState = useSelector((state: RootState) => state.sessionState);
 
   const dispatch = useDispatch<AppDispatch>();

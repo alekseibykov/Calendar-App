@@ -8,7 +8,7 @@ import { addTask } from '../reducers/actions/tasksActions';
 import EventList from './EventList';
 import Footer from './Footer';
 import "../App.css";
-import {AppDispatch, RootState} from "../index.tsx";
+import {AppDispatch, RootState} from "../index";
 
 
 const HomeContent = () => {

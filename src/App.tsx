@@ -6,14 +6,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
-import { fetchToDos } from './reducers/actions/tasksActions.ts';
-import withAuthentication  from './hooks/withAuthentication.tsx';
-import type { RootState, AppDispatch } from './index.tsx';
+import { fetchToDos } from './reducers/actions/tasksActions';
+import withAuthentication  from './hooks/withAuthentication';
+import type { RootState, AppDispatch } from './index';
 
 // Lazy load route components
-const HomeScreen = lazy(() => import('./components/HomeScreen.tsx'));
-const RegistrationScreen = lazy(() => import('./components/RegistrationScreen.tsx'));
-const CalendarScreen = lazy(() => import('./components/CalendarScreen.tsx'));
+const HomeScreen = lazy(() => import('./components/HomeScreen'));
+const RegistrationScreen = lazy(() => import('./components/RegistrationScreen'));
+const CalendarScreen = lazy(() => import('./components/CalendarScreen'));
 
 // --- Firebase Initialization ---
 const firebaseConfig = {

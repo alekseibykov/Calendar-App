@@ -1,7 +1,7 @@
 import { ref, push, update, remove, onValue } from "firebase/database";
-import { database } from "../../App.tsx"; // Assuming the database is exported from App.tsx
+import { database } from "../../App"; // Assuming the database is exported from App.tsx
 import { setTasks, removeTaskOptimistic, updateTaskOptimistic } from '../tasksSlice';
-import {AppDispatch} from "../../index.tsx";
+import {AppDispatch} from "../../index";
 
 // Define interfaces for action payloads
 interface TaskPayload {

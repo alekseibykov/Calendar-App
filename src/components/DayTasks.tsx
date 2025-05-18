@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '../index.tsx';
+import { AppDispatch } from '../index';
 
 import { removeTask } from '../reducers/actions/tasksActions';
 import TaskAdder from './TaskAdder';

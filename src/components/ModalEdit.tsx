@@ -3,8 +3,8 @@ import ReactModal from 'react-modal';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { changeTaskName, changeTaskDate } from '../reducers/actions/tasksActions.ts';
-import { useAppSelector, useAppDispatch } from "../App.tsx";
+import { changeTaskName, changeTaskDate } from '../reducers/actions/tasksActions';
+import { useAppSelector, useAppDispatch } from "../App";
 import type { TasksState } from '../reducers/tasksSlice.ts'; // Corrected import path
 
 interface Props {

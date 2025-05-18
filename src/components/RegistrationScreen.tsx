@@ -4,27 +4,12 @@ import { createUserWithEmailAndPassword, AuthError } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
-
-// Define RootState, should match your store's state structure
-interface AuthUser {
-  uid: string;
-  // include other properties of authUser if accessed
-}
-
-interface SessionState {
-  authUser: AuthUser | null;
-  // other session properties
-}
-
-interface RootState {
-  sessionState: SessionState; // Or SessionState | null if sessionState itself can be null
-  // other top-level state slices
-}
+import type { RootState } from '../index';
 
 function RegistrationScreen() {
-  const [email, setEmail] = useState<string>('Email');
-  const [password, setPassword] = useState<string>('Password');
-  const [name, setName] = useState<string>('Your name');
+  const [email, setEmail] = useState('Email');
+  const [password, setPassword] = useState('Password');
+  const [name, setName] = useState('Your name');
   const authUser = useSelector((state: RootState) => state.sessionState.authUser);
   const navigate = useNavigate();
 
