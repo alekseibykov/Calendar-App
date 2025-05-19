@@ -1,23 +1,21 @@
 import { ref, push, update, remove, onValue } from "firebase/database";
-import { database } from "../../App"; // Assuming the database is exported from App.tsx
+import { database } from "../../App";
 import { setTasks, removeTaskOptimistic, updateTaskOptimistic } from '../tasksSlice';
 import {AppDispatch} from "../../index";
 
-// Define interfaces for action payloads
 interface TaskPayload {
   uid: string;
   name: string;
-  startDate: Date; // Assuming startDate is a Date object before conversion,
-  // Add 'id' or 'key' if it's part of the object passed to addTaskOptimistic
-  id?: string; // Optional, as it might be generated or derived
-  key?: string; // Alternative to id
+  startDate: Date;
+  id?: string;
+  key?: string;
 }
 
 interface CurrentTaskPayload {
   key: string;
   uid: string;
-  name?: string; // Optional for date change
-  date?: Date;   // Optional for name change
+  name?: string;
+  date?: Date;
 }
 
 // Augment the Date interface to include addDays
@@ -36,7 +34,7 @@ Date.prototype.addDays = function(days: number): Date {
 export const fetchToDos = (uid: string) => async (dispatch: AppDispatch) => {
   const userTasksRef = ref(database, 'users/' + uid + '/tasks/');
   onValue(userTasksRef, snapshot => {
-    dispatch(setTasks(snapshot.val())); // Use setTasks action creator
+    dispatch(setTasks(snapshot.val()));
   });
 };
 
