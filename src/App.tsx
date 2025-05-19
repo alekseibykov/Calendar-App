@@ -41,7 +41,7 @@ const App = () => {
 
   useEffect(() => {
     if (authUser && authUser.uid) {
-      dispatch(fetchToDos(authUser.uid));
+      void dispatch(fetchToDos(authUser.uid));
     }
   }, [authUser, dispatch]);
 

@@ -42,7 +42,7 @@ const LoginForm = () => {
     }
 
     return (
-      <button onClick={onPress} type="button">
+      <button onClick={() => void onPress()} type="button">
         Log In
       </button>
     );

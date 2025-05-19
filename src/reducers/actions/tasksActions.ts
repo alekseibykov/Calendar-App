@@ -1,6 +1,6 @@
 import { ref, push, update, remove, onValue } from "firebase/database";
 import { database } from "../../App";
-import { setTasks, removeTaskOptimistic, updateTaskOptimistic } from '../tasksSlice';
+import { setTasks, removeTaskOptimistic, updateTaskOptimistic, TasksState } from '../tasksSlice';
 import {AppDispatch} from "../../index";
 
 interface TaskPayload {
@@ -31,14 +31,14 @@ Date.prototype.addDays = function(days: number): Date {
   return date;
 }
 
-export const fetchToDos = (uid: string) => async (dispatch: AppDispatch) => {
+export const fetchToDos = (uid: string) => (dispatch: AppDispatch) => {
   const userTasksRef = ref(database, 'users/' + uid + '/tasks/');
   onValue(userTasksRef, snapshot => {
-    dispatch(setTasks(snapshot.val()));
+    dispatch(setTasks(snapshot.val() as TasksState | null));
   });
 };
 
-export const addTask = (taskObject: TaskPayload) => async () => {
+export const addTask = (taskObject: TaskPayload) => () => {
   const userTasksRef = ref(database, 'users/' + taskObject.uid + '/tasks/');
   // Optimistically add the task
   // For Firebase push, a key is generated, so we might not have it beforehand for an optimistic update
@@ -57,7 +57,7 @@ export const addTask = (taskObject: TaskPayload) => async () => {
   });
 };
 
-export const removeTask = (key: string, uid: string) => async (dispatch: AppDispatch) => {
+export const removeTask = (key: string, uid: string) => (dispatch: AppDispatch) => {
   const taskRef = ref(database, 'users/' + uid + '/tasks/' + key);
   // Optimistically remove the task
   dispatch(removeTaskOptimistic({ id: key }));
@@ -73,7 +73,7 @@ export const removeTask = (key: string, uid: string) => async (dispatch: AppDisp
   });
 };
 
-export const changeTaskName = (currentTaskObject: CurrentTaskPayload) => async (dispatch: AppDispatch) => {
+export const changeTaskName = (currentTaskObject: CurrentTaskPayload) => (dispatch: AppDispatch) => {
   if (!currentTaskObject || !currentTaskObject.uid || !currentTaskObject.key || currentTaskObject.name === undefined) {
     console.error("Error: uid, key, or name missing in currentTaskObject for changeTaskName", currentTaskObject);
     return;
@@ -92,7 +92,7 @@ export const changeTaskName = (currentTaskObject: CurrentTaskPayload) => async (
   });
 };
 
-export const changeTaskDate = (currentTaskObject: CurrentTaskPayload) => async (dispatch: AppDispatch) => {
+export const changeTaskDate = (currentTaskObject: CurrentTaskPayload) => (dispatch: AppDispatch) => {
   if (!currentTaskObject || !currentTaskObject.uid || !currentTaskObject.key || !currentTaskObject.date) {
     console.error("Error: uid, key, or date missing in currentTaskObject for changeTaskDate", currentTaskObject);
     return;

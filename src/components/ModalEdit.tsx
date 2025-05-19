@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { changeTaskName, changeTaskDate } from '../reducers/actions/tasksActions';
 import { useAppSelector, useAppDispatch } from "../App";
-import type { TasksState } from '../reducers/tasksSlice.ts'; // Corrected import path
 
 interface Props {
   modalKey: string | null; // Allow modalKey to be null if no task is selected
@@ -18,7 +17,7 @@ const ModalEdit = (props: Props) => {
   // Initialize startDate with Date or null for better type handling with DatePicker
   const [startDate, setStartDate] = useState<Date | null>(null);
 
-  const allTasks = useAppSelector(state => state.data as TasksState | null); // state.data is tasksReducer state
+  const allTasks = useAppSelector(state => state.data); // state.data is tasksReducer state
   const authUser = useAppSelector(state => state.sessionState.authUser);
   const dispatch = useAppDispatch();
 

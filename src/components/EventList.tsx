@@ -50,7 +50,7 @@ function EventList() {
       return data
         .filter(el => el && el.data && el.data.eventDate) // Ensure task and eventDate exist
         .map((el) => {
-          const date = getISODateString(new Date(el.data.eventDate!)); // el.data.eventDate is now checked
+          const date = getISODateString(new Date(el.data.eventDate)); // el.data.eventDate is now checked
           if (filterCondition(date)) {
             return (
               <li className="task_item" key={el.key}>
@@ -59,7 +59,7 @@ function EventList() {
                 </span>
                 <button onClick={() => {
                   if (uid) { // Ensure uid is available
-                    dispatch(removeTaskAction(el.key, uid));
+                    void dispatch(removeTaskAction(el.key, uid));
                   }
                 }} type="button">Remove</button>
               </li>
