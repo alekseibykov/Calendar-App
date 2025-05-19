@@ -43,7 +43,7 @@ const ModalEdit = (props: Props) => {
       console.error("User not authenticated or task key missing, cannot change task name.");
       return;
     }
-    let currentTaskObject = {
+    const currentTaskObject = {
       key: props.modalKey,
       name: name,
       uid: authUser.uid,
@@ -62,7 +62,7 @@ const ModalEdit = (props: Props) => {
       console.error("User not authenticated, task key, or date missing, cannot change task date.");
       return;
     }
-    let currentTaskObject = {
+    const currentTaskObject = {
       key: props.modalKey,
       // Ensure date is a Date object as expected by CurrentTaskPayload
       date: startDate, 

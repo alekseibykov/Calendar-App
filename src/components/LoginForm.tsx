@@ -84,9 +84,9 @@ const LoginForm = () => {
 const styles = {
   errorTextStyle: {
     fontSize: 20,
-    textAlign: 'center' as 'center',
+    textAlign: 'center',
     color: 'red'
   }
-};
+} as const;
 
 export default LoginForm;

@@ -12,8 +12,6 @@ interface TaskAdderProps {
 const TaskAdder = (props: TaskAdderProps) => { // Use TaskAdderProps
   const [showAddToday, setShowAddToday] = useState(false);
   const [nameAddToday, setNameAddToday] = useState<string>('');
-  
-  const data = useSelector((state: RootState) => state.data);
   const sessionState = useSelector((state: RootState) => state.sessionState);
 
   const dispatch = useDispatch<AppDispatch>();

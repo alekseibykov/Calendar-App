@@ -45,14 +45,14 @@ const DayTasks = ({ startDate }: DayTasksProps) => {
     }
     const validStartDate = startDate;
 
-    let today = new Date(validStartDate.getFullYear(), validStartDate.getMonth(), validStartDate.getDate());
+    const today = new Date(validStartDate.getFullYear(), validStartDate.getMonth(), validStartDate.getDate());
     // The addDays method should be available via global declaration in tasksActions.ts
-    let tomorrow = new Date(validStartDate.valueOf()); // Clone startDate
+    const tomorrow = new Date(validStartDate.valueOf()); // Clone startDate
     tomorrow.setDate(tomorrow.getDate() + 1); // Standard way to add a day
 
     return data.map((el) => {
       if (!el || !el.data || !el.data.eventDate) return null; // Guard against undefined task data
-      let date = new Date(el.data.eventDate);
+      const date = new Date(el.data.eventDate);
       if (date >= today && date < tomorrow) {
         return (
           <li className="task_item" key={el.key}>

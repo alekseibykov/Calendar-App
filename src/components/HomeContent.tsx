@@ -33,9 +33,9 @@ const HomeContent = () => {
       console.error("Cannot add task: User not authenticated.");
       return;
     }
-    let d = startDate;
-    let nd = new Date();
-    let dateId = new Date(
+    const d = startDate;
+    const nd = new Date();
+    const dateId = new Date(
       d.getFullYear(),
       d.getMonth(),
       d.getDate(),

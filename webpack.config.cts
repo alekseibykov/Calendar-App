@@ -2,6 +2,7 @@ import {resolve as _resolve} from 'path';
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import Dotenv from 'dotenv-webpack';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
 export default (env: { mode: any; }) => {
     const isDev = env.mode === 'development';
@@ -30,6 +31,14 @@ export default (env: { mode: any; }) => {
                     use: 'ts-loader',
                     exclude: /node_modules/,
                 },
+                {
+                    test: /\\.(png|svg|jpg|jpeg|gif)$/i,
+                    type: 'asset/resource',
+                },
+                {
+                    test: /\\.(woff|woff2|eot|ttf|otf)$/i,
+                    type: 'asset/resource',
+                },
             ],
         },
         resolve: {
@@ -41,11 +50,20 @@ export default (env: { mode: any; }) => {
                 template: _resolve(__dirname, 'public', './index.html'),
             }),
             new MiniCssExtractPlugin(),
+            new ESLintPlugin({
+                extensions: ['ts', 'tsx'],
+                exclude: 'node_modules',
+            }),
         ],
         output: {
             filename: '[name].[contenthash].js',
             path: _resolve(__dirname, 'dist'),
             clean: true,
+        },
+        optimization: {
+            splitChunks: {
+                chunks: 'all',
+            },
         },
         devtool: isDev ? 'inline-source-map' : false,
         devServer: {
