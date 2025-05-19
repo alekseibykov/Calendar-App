@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ComponentType, FC } from 'react';
+import { useEffect, useRef, ComponentType, FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { auth } from '../App';
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";

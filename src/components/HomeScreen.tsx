@@ -1,4 +1,3 @@
-import React from 'react';
 import "firebase/database";
 import "firebase/auth";
 import { useSelector } from 'react-redux';

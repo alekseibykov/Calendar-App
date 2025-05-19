@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../index';
 
@@ -40,7 +40,7 @@ const DayTasks = ({ startDate }: DayTasksProps) => {
     let data: { key: string; data: Task }[] = [];
     if (rawData !== null) {
       data = Object.keys(rawData).map((key: string) => {
-        return {key: key, data: rawData[key] };
+        return {key: key, data: rawData[key]! };
       });
     }
     const validStartDate = startDate;

@@ -9,7 +9,7 @@ export interface AuthUser {
 }
 
 // Define a type for the session state
-interface SessionState {
+export interface SessionState {
   authUser: AuthUser | null;
 }
 

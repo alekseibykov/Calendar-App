@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -23,8 +23,10 @@ const CalendarScreen = () => {
   if (rawData === null) {
     return <p>Loading page...</p>;
   }
-  data = Object.keys(rawData).map((key: string) => {
-    return {key: key, data: rawData[key] };
+  data = Object.keys(rawData)
+      .filter(key => rawData[key] !== undefined)
+      .map((key: string) => {
+    return {key: key, data: rawData[key]! };
   })
 
   const highlightedDates = data.map(el => new Date(el.data.eventDate));
