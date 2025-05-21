@@ -7,6 +7,8 @@ function Footer() {
       <Link to="/">Main </Link>
       <br />
       <Link to="/calendar/">Calendar </Link>
+      <br />
+      <Link to="/microfrontend/">Microfrontend </Link>
     </nav>
   );  
 }

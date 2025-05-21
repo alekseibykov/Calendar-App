@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "start": "concurrently \"npm:start:main\" \"npm:start:microfrontend\"",
     "build": "webpack --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "analyze": "webpack --config webpack.prod.js --profile --json > stats.json && webpack-bundle-analyzer stats.json dist"
+    "analyze": "webpack --config webpack.prod.js --profile --json > stats.json && webpack-bundle-analyzer stats.json dist",
+    "start:main": "webpack serve --open --config webpack.dev.js",
+    "start:microfrontend": "cd microfrontend && npm start"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.2",

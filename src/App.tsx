@@ -14,6 +14,7 @@ import type { RootState, AppDispatch } from './index';
 const HomeScreen = lazy(() => import('./components/HomeScreen'));
 const RegistrationScreen = lazy(() => import('./components/RegistrationScreen'));
 const CalendarScreen = lazy(() => import('./components/CalendarScreen'));
+const MicrofrontendApp = lazy(() => import('microfrontend/App'));
 
 // --- Firebase Initialization ---
 const firebaseConfig = {
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/" element={<HomeScreen />} />
           <Route path="/registration/" element={<RegistrationScreen />} />
           <Route path="/calendar/*" element={<CalendarScreen />} />
+          <Route path="/microfrontend/*" element={<MicrofrontendApp />} />
         </Routes>
       </Suspense>
     </Router>
