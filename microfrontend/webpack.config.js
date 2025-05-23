@@ -34,6 +34,10 @@ module.exports = {
           presets: ['@babel/preset-react', '@babel/preset-typescript'],
         },
       },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
@@ -51,6 +55,5 @@ module.exports = {
         'react-dom': { singleton: true, eager: true, requiredVersion: '^18.0.0' },
       },
     }),
-    
-  ],
+  ].filter(Boolean),
 }; 

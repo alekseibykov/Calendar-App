@@ -1,13 +1,10 @@
 import React from 'react';
+import { Dashboard } from './pages/Dashboard';
+// Import to ensure Chart.js is registered
+import './shared/lib/chart-config';
 
-const App = () => {
-  return (
-    <div>
-      <h1>Hello from Microfrontend!</h1>
-      <p>This is a simple React microfrontend.</p>
-      <a href="/">Go to Main</a>
-    </div>
-  );
+const App: React.FC = () => {
+  return <Dashboard />;
 };
 
 export default App; 
