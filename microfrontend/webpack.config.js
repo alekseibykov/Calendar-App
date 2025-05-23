@@ -9,7 +9,7 @@ module.exports = {
   mode: mode,
   devServer: {
     static: path.join(__dirname, 'dist'),
-    port: 3002, // Different port from the main app
+    port: 3001, // Different port from the main app
   },
   output: {
     publicPath: 'auto',

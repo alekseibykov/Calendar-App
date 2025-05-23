@@ -66,7 +66,7 @@ const TaskAdder = (props: TaskAdderProps) => { // Use TaskAdderProps
   let renderAddTodayTask;
   if (showAddToday) {
     renderAddTodayTask = (
-      <span>
+      <span className="task-adder-inline">
         <input
           onChange={handleClick_3}
           value={nameAddToday}

@@ -88,6 +88,8 @@ const ModalEdit = (props: Props) => {
       contentLabel="Edit Task Modal"
       appElement={el}
       onRequestClose={props.handleCloseModal}
+      className="modal-content"
+      overlayClassName="modal-overlay"
     >
       <button onClick={props.handleCloseModal}>Close Modal</button>
       <br />

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSelector } from 'react-redux';
-import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,6 +8,7 @@ import { RootState } from '../index';
 import { Task } from '../reducers/tasksSlice';
 
 import DayTasks from './DayTasks';
+import Footer from './Footer';
 
 const CalendarScreen = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -20,38 +20,39 @@ const CalendarScreen = () => {
     }
   };
 
-  let data: { key: string; data: Task }[] = [];
   if (rawData === null) {
-    return <p>Loading page...</p>;
+    return <p className="loading">Loading page...</p>;
   }
-  data = Object.keys(rawData)
-      .filter(key => rawData[key] !== undefined)
-      .map((key: string) => {
-    return {key: key, data: rawData[key] };
-  })
+
+  const data = Object.keys(rawData)
+    .filter(key => rawData[key] !== undefined)
+    .map((key: string) => ({ key, data: rawData[key] }));
 
   const highlightedDates = data.map(el => new Date(el.data.eventDate));
-
   const highlightWithRanges = [
     { "react-datepicker__day--highlighted-custom-1": highlightedDates },
   ];
+
   return (
-    <div>
-      <h1> Calendar Screen </h1>
-      <DatePicker
-        inline
-        selected={startDate}
-        onChange={handleChange}
-        highlightDates={highlightWithRanges}
-      />
-      <DayTasks startDate={startDate} />
-      <br/>
-      <br/>
-      <nav>
-        <Link to="/">Main </Link>
-        <br />
-        <Link to="/calendar/">Calendar </Link>
-      </nav>
+    <div className="App">
+      <h1>Calendar</h1>
+      
+      <div className="calendar-container">
+        <div className="calendar-section">
+          <DatePicker
+            inline
+            selected={startDate}
+            onChange={handleChange}
+            highlightDates={highlightWithRanges}
+          />
+        </div>
+        
+        <div className="tasks-section">
+          <DayTasks startDate={startDate} />
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 };

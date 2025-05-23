@@ -46,7 +46,7 @@ function RegistrationScreen() {
   };
 
   return (
-    <div>
+    <div className="registration-form">
       <input
         onChange={handleNameChange}
         value={name}

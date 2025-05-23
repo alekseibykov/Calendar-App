@@ -7,6 +7,7 @@ import { getDatabase } from "firebase/database";
 
 import { fetchToDos } from './reducers/tasksSlice';
 import withAuthentication  from './hooks/withAuthentication';
+import ScrollToTop from './components/ScrollToTop';
 
 import type { RootState, AppDispatch } from './index';
 
@@ -31,7 +32,7 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);
 
-const LoadingFallback = () => <p>Loading page...</p>;
+const LoadingFallback = () => <p className="loading">Loading page...</p>;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -48,6 +49,7 @@ const App = () => {
 
   return (
     <Router>
+      <ScrollToTop />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route path="/" element={<HomeScreen />} />

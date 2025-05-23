@@ -6,6 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>React Starter</title>
+  <style>
+    /* Prevent white flash on load */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+    
+    /* Loading state styling */
+    #root {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    
+    /* Initial loading text styling */
+    .loading {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      margin: 2rem 0;
+      padding-top: 20vh;
+    }
+  </style>
 </head>
 
 <body>

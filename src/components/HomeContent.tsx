@@ -69,11 +69,6 @@ const HomeContent = () => {
     <div className="App">
       <h1>
         Calendar App
-        {sessionState?.authUser && (
-          <button onClick={() => void handleSignOut()}>
-            Log Out
-          </button>
-        )}
       </h1>
       <h4>
         Current user: {userEmail}
@@ -82,25 +77,31 @@ const HomeContent = () => {
       {sessionState?.authUser ? (
         <>
           <EventList />
-          <br/>
-          <input
-            onChange={handleInputChange}
-            value={name}
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Add task here"
-          />
-          <DatePicker
-            selected={startDate}
-            onChange={handleDateChange}
-          />
-          <button onClick={handleAddTaskClick} type="button">Add</button>
+          <div className="add-task-form">
+            <input
+              onChange={handleInputChange}
+              value={name}
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Add task here"
+            />
+            <DatePicker
+              selected={startDate}
+              onChange={handleDateChange}
+            />
+            <button onClick={handleAddTaskClick} type="button">Add</button>
+          </div>
         </>
       ) : (
         <p>Please log in to manage your tasks.</p>
       )}
       <Footer />
+      {sessionState?.authUser && (
+          <button onClick={() => void handleSignOut()}>
+            Log Out
+          </button>
+        )}
     </div>
   );
 };

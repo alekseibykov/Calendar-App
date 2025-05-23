@@ -50,7 +50,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <div className="login-form">
       <input
         onChange={handleEmailChange}
         value={email}
@@ -71,9 +71,9 @@ const LoginForm = () => {
       />
       <br/>
       <br/>
-      <div style={styles.errorTextStyle}>
+      {error && <div className="errorTextStyle">
         {error}
-      </div>
+      </div>}
 
       {renderButton()}
 
@@ -81,13 +81,5 @@ const LoginForm = () => {
     </div>
   );
 };
-
-const styles = {
-  errorTextStyle: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: 'red'
-  }
-} as const;
 
 export default LoginForm;
