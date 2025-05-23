@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { changeTaskName, changeTaskDate } from '../reducers/actions/tasksActions';
+import { changeTaskName, changeTaskDate } from '../reducers/tasksSlice';
 import { useAppSelector, useAppDispatch } from "../App";
 
 interface Props {

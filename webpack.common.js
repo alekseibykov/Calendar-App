@@ -30,7 +30,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'host', // Or your main app's name
       remotes: {
-        microfrontend: 'microfrontend@http://123.123.123.123:3001/remoteEntry.js', // Assuming microfrontend runs on port 3001
+        microfrontend: 'microfrontend@http://111.111.111.11:3001/remoteEntry.js', // Assuming microfrontend runs on port 3001
       },
       shared: {
         react: { singleton: true, eager: true, requiredVersion: '^18.0.0' },

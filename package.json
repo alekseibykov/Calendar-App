@@ -9,10 +9,11 @@
   "scripts": {
     "start": "concurrently \"npm:start:main\" \"npm:start:microfrontend\"",
     "build": "webpack --config webpack.prod.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "analyze": "webpack --config webpack.prod.js --profile --json > stats.json && webpack-bundle-analyzer stats.json dist",
     "start:main": "webpack serve --open --config webpack.dev.js",
-    "start:microfrontend": "cd microfrontend && npm start"
+    "start:microfrontend": "cd microfrontend && npm start",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix"
   },
   "author": "",
   "license": "ISC",
@@ -35,7 +36,11 @@
     "css-minimizer-webpack-plugin": "^7.0.2",
     "dotenv-webpack": "^8.1.0",
     "eslint": "^9.27.0",
+    "eslint-import-resolver-typescript": "^4.3.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-webpack-plugin": "^5.0.1",
     "globals": "^16.1.0",
     "html-webpack-plugin": "^5.6.3",

@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
+
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 import { RootState } from '../index';
+import { Task } from '../reducers/tasksSlice';
 
 import DayTasks from './DayTasks';
-import { Task } from '../reducers/tasksSlice';
 
 const CalendarScreen = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -26,7 +27,7 @@ const CalendarScreen = () => {
   data = Object.keys(rawData)
       .filter(key => rawData[key] !== undefined)
       .map((key: string) => {
-    return {key: key, data: rawData[key]! };
+    return {key: key, data: rawData[key] };
   })
 
   const highlightedDates = data.map(el => new Date(el.data.eventDate));

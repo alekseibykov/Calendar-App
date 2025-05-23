@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../index';
 
-import { addTask } from '../reducers/actions/tasksActions';
+import { AppDispatch, RootState } from '../index';
+import { addTask } from '../reducers/tasksSlice';
 
 // Re-introduce TaskAdderProps interface
 interface TaskAdderProps {
@@ -55,7 +55,7 @@ const TaskAdder = (props: TaskAdderProps) => { // Use TaskAdderProps
     }
     
     if (eventDate) {
-      dispatch(addTask({ name: nameAddToday, startDate: eventDate, uid: sessionState.authUser.uid }));
+      void dispatch(addTask({ name: nameAddToday, startDate: eventDate, uid: sessionState.authUser.uid }));
       setShowAddToday(false);
       setNameAddToday('');
     } else {

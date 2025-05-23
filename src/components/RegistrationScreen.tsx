@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { auth, database } from '../App';
-import { createUserWithEmailAndPassword, AuthError } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
+
+import { auth, database } from '../App';
 import type { RootState } from '../index';
 
 function RegistrationScreen() {
@@ -15,7 +16,7 @@ function RegistrationScreen() {
 
   useEffect(() => {
     if (authUser) {
-      navigate('/', { replace: true });
+      void navigate('/', { replace: true });
     }
   }, [authUser, navigate]);
 
@@ -31,20 +32,17 @@ function RegistrationScreen() {
     setName(e.target.value);
   };
 
-  const onPress = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user.uid);
-        return set(ref(database, 'users/' + user.uid), ({ email: user.email, uid: user.uid, name: name }));
-      })
-      .then(() => {
-        console.log("User created and data saved.");
-      })
-      .catch((error: AuthError) => {
-        const errorMessage = error.message;
-        console.error("Registration Error:", errorMessage);
-      });
+  const onPress = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log(user.uid);
+      await set(ref(database, 'users/' + user.uid), ({ email: user.email, uid: user.uid, name: name }));
+      console.log("User created and data saved.");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error("Registration Error:", errorMessage);
+    }
   };
 
   return (
@@ -73,7 +71,7 @@ function RegistrationScreen() {
         name="password"
         placeholder="Password"
       />
-      <button onClick={onPress} type="button">
+      <button onClick={() => void onPress()} type="button">
         Create account
       </button>
       <Link to="/">Back </Link>

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from "firebase/auth";
 
 import { auth } from '../App';
-import { signOut } from "firebase/auth";
-import { addTask } from '../reducers/actions/tasksActions';
+import { addTask } from '../reducers/tasksSlice';
+import {AppDispatch, RootState} from "../index";
+
 import EventList from './EventList';
 import Footer from './Footer';
 import "../App.css";
-import {AppDispatch, RootState} from "../index";
-
 
 const HomeContent = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -44,7 +44,7 @@ const HomeContent = () => {
       nd.getSeconds(),
       nd.getMilliseconds()
     );
-    dispatch(addTask({
+    void dispatch(addTask({
       name: name,
       startDate: dateId,
       uid: sessionState.authUser.uid
@@ -52,14 +52,15 @@ const HomeContent = () => {
     setName(''); // Reset input field
   };
 
-  const handleSignOut = () => {
-    signOut(auth).then(() => {
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
       console.log("User signed out successfully.");
       // Optionally, dispatch an action to clear user session state in Redux
       // dispatch(clearSession()); 
-    }).catch((error) => {
+    } catch (error) {
       console.error("Sign out error:", error);
-    });
+    }
   };
 
   const userEmail = sessionState?.authUser?.email ?? 'Guest';
@@ -69,7 +70,7 @@ const HomeContent = () => {
       <h1>
         Calendar App
         {sessionState?.authUser && (
-          <button onClick={handleSignOut}>
+          <button onClick={() => void handleSignOut()}>
             Log Out
           </button>
         )}

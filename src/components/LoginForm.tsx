@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { auth } from '../App';
 import { signInWithEmailAndPassword, AuthError } from "firebase/auth";
 import { Link } from "react-router-dom";
+
+import { auth } from '../App';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('Email@gmail.com');

@@ -2,9 +2,10 @@ import "firebase/database";
 import "firebase/auth";
 import { useSelector } from 'react-redux';
 
+import type { RootState } from '../index';
+
 import LoginForm from './LoginForm';
 import HomeContent from './HomeContent';
-import type { RootState } from '../index';
 
 const HomeScreen = () => {
   const authUser = useSelector((state: RootState) => state.sessionState.authUser);

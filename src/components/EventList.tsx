@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
-import TaskAdder from './TaskAdder';
-import ModalEdit from './ModalEdit';
-import { removeTask as removeTaskAction } from '../reducers/actions/tasksActions';
-import { Task } from '../reducers/tasksSlice';
+import { removeTask as removeTaskAction , Task } from '../reducers/tasksSlice';
 import { RootState, AppDispatch } from '../index';
+
+import ModalEdit from './ModalEdit';
+import TaskAdder from './TaskAdder';
 
 // Define getISODateString locally or import from a shared utility file
 const getISODateString = (date: Date): string => {
@@ -40,7 +40,7 @@ function EventList() {
     let data: { key: string; data: Task }[] = [];
     if (rawData !== null) {
       data = Object.keys(rawData).map((key: string) => {
-        return {key: key, data: rawData[key]! };
+        return {key: key, data: rawData[key] };
       })
     }
 
@@ -54,12 +54,16 @@ function EventList() {
           if (filterCondition(date)) {
             return (
               <li className="task_item" key={el.key}>
-                <span onClick={() => handleOpenModal(el.key)}>
+                <button
+                  type="button"
+                  onClick={() => handleOpenModal(el.key)}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
+                >
                   {el.data.name + ' '}
-                </span>
+                </button>
                 <button onClick={() => {
-                  if (uid) { // Ensure uid is available
-                    void dispatch(removeTaskAction(el.key, uid));
+                  if (uid) { 
+                    dispatch(removeTaskAction(el.key, uid));
                   }
                 }} type="button">Remove</button>
               </li>

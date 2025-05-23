@@ -1,13 +1,13 @@
 import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch, TypedUseSelectorHook } from 'react-redux';
-
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
-import { fetchToDos } from './reducers/actions/tasksActions';
+import { fetchToDos } from './reducers/tasksSlice';
 import withAuthentication  from './hooks/withAuthentication';
+
 import type { RootState, AppDispatch } from './index';
 
 // Lazy load route components

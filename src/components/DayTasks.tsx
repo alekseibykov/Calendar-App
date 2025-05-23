@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '../index';
 
-import { removeTask } from '../reducers/actions/tasksActions';
+import { AppDispatch , RootState } from '../index';
+import { removeTask , Task } from '../reducers/tasksSlice';
+
 import TaskAdder from './TaskAdder';
 import ModalEdit from './ModalEdit';
-import { Task } from '../reducers/tasksSlice';
-import { RootState } from "..";
+
+
 
 
 interface DayTasksProps {
@@ -40,7 +41,7 @@ const DayTasks = ({ startDate }: DayTasksProps) => {
     let data: { key: string; data: Task }[] = [];
     if (rawData !== null) {
       data = Object.keys(rawData).map((key: string) => {
-        return {key: key, data: rawData[key]! };
+        return {key: key, data: rawData[key] };
       });
     }
     const validStartDate = startDate;
@@ -56,9 +57,13 @@ const DayTasks = ({ startDate }: DayTasksProps) => {
       if (date >= today && date < tomorrow) {
         return (
           <li className="task_item" key={el.key}>
-            <span onClick={() => handleOpenModal(el.key)}>
+            <button
+              type="button"
+              onClick={() => handleOpenModal(el.key)}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
+            >
               {el.data.name + ' '}
-            </span>
+            </button>
             <button onClick={() => handleRemove(el.key, sessionState?.authUser?.uid)} type="button">Remove</button>
           </li>
         );

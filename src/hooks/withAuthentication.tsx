@@ -1,7 +1,8 @@
 import { useEffect, useRef, ComponentType, FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { auth } from '../App';
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+
+import { auth } from '../App';
 import { setAuthUser, clearAuthUser } from '../reducers/sessionSlice';
 import { AppDispatch } from '../index';
 
