@@ -13,7 +13,8 @@
     "start:main": "webpack serve --open --config webpack.dev.js",
     "start:microfrontend": "cd microfrontend && npm start",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "lint:fix": "eslint src/**/*.{ts,tsx} --fix"
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
+    "tsc": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",

@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 import { RootState } from '../index';
-import { Task } from '../reducers/tasksSlice';
 
 import DayTasks from './DayTasks';
 import Footer from './Footer';

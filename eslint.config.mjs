@@ -124,7 +124,7 @@ export default [
     },
   },
 
-  // Configuration for test files (if you have any)
+  // Configuration for test files
   {
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     rules: {

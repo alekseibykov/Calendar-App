@@ -33,8 +33,8 @@ module.exports = {
         microfrontend: 'microfrontend@http://localhost:3001/remoteEntry.js', // Assuming microfrontend runs on port 3001
       },
       shared: {
-        react: { singleton: true, eager: true, requiredVersion: '^18.0.0' },
-        'react-dom': { singleton: true, eager: true, requiredVersion: '^18.0.0' },
+        react: { singleton: true, eager: true, requiredVersion: '^19.0.0' },
+        'react-dom': { singleton: true, eager: true, requiredVersion: '^19.0.0' },
       },
     }),
   ],
