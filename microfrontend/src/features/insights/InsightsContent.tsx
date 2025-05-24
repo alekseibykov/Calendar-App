@@ -10,14 +10,14 @@ export const InsightsContent: React.FC<InsightsContentProps> = ({ metrics }) => 
   return (
     <div className="insights-detailed">
       <div className="insight-card">
-        <h3>📊 Weekly Summary</h3>
+        <h3>Weekly Summary</h3>
         <p>
           You completed <strong>{metrics.completedTasks}</strong> tasks this week, 
           which is <strong>15% better</strong> than last week!
         </p>
       </div>
       <div className="insight-card">
-        <h3>🎯 Recommendations</h3>
+        <h3>Recommendations</h3>
         <ul>
           <li>Focus on high-priority tasks during your peak hours (9-11 AM)</li>
           <li>Break down large tasks into smaller, manageable chunks</li>

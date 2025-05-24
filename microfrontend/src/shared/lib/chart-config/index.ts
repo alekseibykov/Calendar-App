@@ -77,7 +77,7 @@ export const radarChartOptions = {
       beginAtZero: true,
       max: 100,
       ticks: { 
-        color: '#cbd5e1',
+        color: 'rgb(255, 255, 255)',
         stepSize: 20,
       },
       grid: { 

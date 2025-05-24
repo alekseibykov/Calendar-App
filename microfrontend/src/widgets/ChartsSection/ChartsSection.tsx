@@ -74,7 +74,7 @@ export const ChartsSection: React.FC<ChartsSectionProps> = ({ activeTab, taskDat
               uniqueKey="radar-chart"
             />
             <div className="insights-panel">
-              <h3>🎯 Productivity Insights</h3>
+              <h3>Productivity Insights</h3>
               <div className="insight-item">
                 <span className="insight-icon">🔥</span>
                 <div>

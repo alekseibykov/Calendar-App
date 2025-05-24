@@ -27,7 +27,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>📊 Task Analytics Dashboard</h1>
+        <h1>Task Analytics Dashboard</h1>
         <p>Comprehensive insights into your productivity patterns</p>
         <a href="/" className="back-link">← Back to Main App</a>
       </header>

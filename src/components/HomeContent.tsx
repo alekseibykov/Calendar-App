@@ -98,7 +98,7 @@ const HomeContent = () => {
       )}
       <Footer />
       {sessionState?.authUser && (
-          <button onClick={() => void handleSignOut()}>
+          <button style={{marginTop: '50px'}} onClick={() => void handleSignOut()}>
             Log Out
           </button>
         )}

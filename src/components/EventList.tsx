@@ -85,15 +85,15 @@ function EventList() {
           showModal={showModal}
           modalKey={modalKey}
         />
-        Today <TaskAdder day="today" />
+        <span style={{fontSize: '1.5rem', fontWeight: 'bold', marginRight: '10px'}}>Today</span> <TaskAdder day="today" />
         <ul>
           {todayList}
         </ul>
-        Tomorrow <TaskAdder day="tomorrow" />
+        <span style={{fontSize: '1.5rem', fontWeight: 'bold', marginRight: '10px'}}>Tomorrow</span> <TaskAdder day="tomorrow" />
         <ul>
           {tomorrowList}
         </ul>
-        Upcoming <TaskAdder day="upcoming" />
+        <span style={{fontSize: '1.5rem', fontWeight: 'bold', marginRight: '10px'}}>Upcoming</span> <TaskAdder day="upcoming" />
         <ul>
           {upcomingList}
         </ul>
